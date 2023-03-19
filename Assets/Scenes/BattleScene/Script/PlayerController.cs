@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float Speed { get; private set; }
+    public event Action<PlayerController, KeyCode> UpArrowKey;
+
+    [SerializeField] private GameObject ProjectilePrefab;
 
     public void Constructor(Player player)
     {
@@ -34,10 +38,20 @@ public class PlayerController : MonoBehaviour
         {
 
         }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            UpArrowKey.Invoke(this, KeyCode.UpArrow);
+        }
 
         if (-9 <= this.transform.position.x + move && this.transform.position.x + move <= 9) //移動が制限範囲内に収まっているかを判定
         {
             this.transform.Translate(move, 0, 0); //プレイヤーの移動を反映
         }
+    }
+
+    //プロジェクティルを生成
+    public GameObject InstanciateProjectile()
+    {
+        return Instantiate(ProjectilePrefab, this.transform.position, Quaternion.identity);
     }
 }

@@ -12,4 +12,9 @@ public class EnemyPresender
         EnemyModel = enemyModel;
         EnemyController = enemyController;
     }
+
+    public void DecreaseHp(float damage)
+    {
+        EnemyModel.DecreaseHp(damage);
+    }
 }

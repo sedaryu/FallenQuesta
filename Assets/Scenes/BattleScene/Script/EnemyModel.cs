@@ -14,4 +14,9 @@ public class EnemyModel
         Hp = enemy.Hp;
         Speed = enemy.Speed;
     }
+
+    public void DecreaseHp(float damage)
+    { 
+        Hp -= damage;
+    }
 }

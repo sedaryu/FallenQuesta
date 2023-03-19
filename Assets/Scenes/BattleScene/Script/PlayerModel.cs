@@ -14,4 +14,9 @@ public class PlayerModel
         Name = player.Name;
         Speed = player.Speed;
     }
+
+    public void DecreaseGuts(float guts)
+    {
+        Guts -= guts;
+    }
 }

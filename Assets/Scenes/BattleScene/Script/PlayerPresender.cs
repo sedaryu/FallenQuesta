@@ -12,4 +12,9 @@ public class PlayerPresender
         PlayerModel = playerModel;
         PlayerController = playerController;
     }
+
+    public void DecreaseGuts(float guts)
+    {
+        PlayerModel.DecreaseGuts(guts);
+    }
 }

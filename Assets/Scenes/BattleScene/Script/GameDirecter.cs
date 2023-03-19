@@ -18,18 +18,32 @@ public class GameDirecter : MonoBehaviour
     public List<EnemyModel> EnemyModel { get; private set; } = new List<EnemyModel>();
     public List<GameObject> EnemyObject { get; private set; } = new List<GameObject>();
     public List<EnemyPresender> EnemyPresender { get; private set; } = new List<EnemyPresender>();
+    public List<Transform> EnemyTransforms { get; private set; } = new List<Transform>();
 
     private EnemyGenerator enemyGenerator; //エネミープレハブからエネミーオブジェクトを生成するためのクラス
+
+    //プロジェクティル
+    public Dictionary<string, Projectile> Projectile { get; private set; } = new Dictionary<string, Projectile>();
+    public Dictionary<KeyCode, Projectile> PlayerProjectile { get; private set; } = new Dictionary<KeyCode, Projectile>();
+
+    private PlayerProjectileEvent PlayerProjectileEvent;
+
 
     private void Awake()
     {
         Player = new Player("Sworder", 10.0f); //各プレイヤーキャラのデータはもっと適切な方法で管理する予定
         Enemy = new Enemy("Devil", 15.0f, 10, 1); //各エネミーキャラのデータはもっと適切な方法で管理する予定
+        Projectile.Add("knife", new Projectile("knife", true, 2, 0.15f, 0.0625f, 2.5f, 0, -0.8f));
+
         Enemies.Add(Enemy);
         Enemies.Add(Enemy);
+        PlayerProjectile.Add(KeyCode.UpArrow, Projectile["knife"]);
+
         GeneratePlayer();
         GenerateEnemy();
 
+        PlayerProjectileEvent = new PlayerProjectileEvent(PlayerPresender, EnemyPresender, PlayerProjectile, EnemyTransforms);
+        PlayerObject.GetComponent<PlayerController>().UpArrowKey += PlayerProjectileEvent.ThrowProjectile; //イベント設定
     }
 
     // Start is called before the first frame update
@@ -60,6 +74,7 @@ public class GameDirecter : MonoBehaviour
         for (int i = 0; i < Enemies.Count; i++)
         {
             EnemyPresender.Add(new EnemyPresender(EnemyModel[i], EnemyObject[i].GetComponent<EnemyController>()));
+            EnemyTransforms.Add(EnemyObject[i].GetComponent<Transform>());
         }
     }
 }
