@@ -13,8 +13,22 @@ public class PlayerPresender
         PlayerController = playerController;
     }
 
-    public void DecreaseGuts(float guts)
+    public bool DecreaseGuts(float guts)
     {
-        PlayerModel.DecreaseGuts(guts);
+        if (PlayerModel.DecreaseGuts(guts))
+        {
+            PlayerController.DecreaseGuts(guts);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void RecoverGuts()
+    { 
+        float recover = PlayerController.RecoverGuts();
+        PlayerModel.RecoverGuts(recover);
     }
 }

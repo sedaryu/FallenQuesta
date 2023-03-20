@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class EnemyController : MonoBehaviour
 {
-    public float Hp { get; private set; }
+    public float MaxHp { get; private set; }
     public float Speed { get; private set; }
     public float Span { get; private set; }
 
@@ -14,9 +15,11 @@ public class EnemyController : MonoBehaviour
     private float delta = 0;
     private float move = 0;
 
+    [System.NonSerialized] public Slider hpGauge;
+
     public void Constructor(Enemy enemy)
     {
-        Hp = enemy.Hp;
+        MaxHp = enemy.Hp;
         Speed = enemy.Speed;
         Span = enemy.Span;
     }
@@ -25,6 +28,9 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         this.transform.position = new Vector3(0, -1, 0); //èâä˙à íuê›íË
+        hpGaugeÅ@= this.gameObject.GetComponentInChildren<Slider>();
+        hpGauge.maxValue = MaxHp;
+        hpGauge.value = MaxHp;
     }
 
     // Update is called once per frame
@@ -60,5 +66,10 @@ public class EnemyController : MonoBehaviour
         {
             move = Random.Range(-Speed, Speed);
         }
+    }
+
+    public void DeadEnemy()
+    { 
+        this.gameObject.SetActive(false); ;
     }
 }

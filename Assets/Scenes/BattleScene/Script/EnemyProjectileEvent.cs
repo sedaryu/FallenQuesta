@@ -2,23 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerProjectileEvent
+public class EnemyProjectileEvent
 {
+    Dictionary<string, Projectile> EnemyProjectile; 
     private PlayerPresender PlayerPresender { get; set; }
-    private List<EnemyPresender> EnemyPresender { get; set; }
-    private Dictionary<KeyCode, Projectile> PlayerProjectile { get; set; }
-    private List<Transform> EnemyTransforms { get; set; }
+    private Transform PlayerTransform { get; set; }
 
-    public PlayerProjectileEvent(PlayerPresender playerPresender, List<EnemyPresender> enemyPresender, 
-                                 Dictionary<KeyCode, Projectile> playerProjectile, List<Transform> enemyTransforms)
+    public EnemyProjectileEvent(PlayerPresender playerPresender, Transform playerTransform)
     {
         PlayerPresender = playerPresender;
-        EnemyPresender = enemyPresender;
-        PlayerProjectile = playerProjectile;
-        EnemyTransforms = enemyTransforms;
+        PlayerTransform = playerTransform;
     }
 
-    public void ThrowProjectile(PlayerController playerController, KeyCode key)
+    public void ThrowProjectile(EnemyController enemyController, string key)
     {
         float cost = PlayerProjectile[key].Cost;
 

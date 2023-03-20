@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameDirecter : MonoBehaviour
 {
@@ -31,9 +32,11 @@ public class GameDirecter : MonoBehaviour
 
     private void Awake()
     {
-        Player = new Player("Sworder", 10.0f); //各プレイヤーキャラのデータはもっと適切な方法で管理する予定
-        Enemy = new Enemy("Devil", 15.0f, 10, 1); //各エネミーキャラのデータはもっと適切な方法で管理する予定
-        Projectile.Add("knife", new Projectile("knife", true, 2, 0.15f, 0.0625f, 2.5f, 0, -0.8f));
+        Player = new Player("Sworder", 10.0f, 0.4f); //各プレイヤーキャラのデータはもっと適切な方法で管理する予定
+        Enemy = new Enemy("Devil", 15.0f, 3.75f, 10, 1); //各エネミーキャラのデータはもっと適切な方法で管理する予定
+        Projectile.Add("knife", new Projectile("knife", true, 2.0f, 0.2f, 0.0625f, 2.5f, 0, -0.8f));
+        Projectile.Add("fire", new Projectile("fire", false, 0f, 0f, 3.0f, -8.5f, -90.0f, 0.8f));
+        Projectile.Add("blast", new Projectile("fire", false, 0f, 0f, 0.5f, -8.5f, -90.0f, 0.8f));
 
         Enemies.Add(Enemy);
         Enemies.Add(Enemy);
@@ -55,7 +58,8 @@ public class GameDirecter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        EnemyPresender.ForEach(x => x.SelfHealing(Time.deltaTime));
+        PlayerPresender.RecoverGuts();
     }
 
     private void GeneratePlayer()

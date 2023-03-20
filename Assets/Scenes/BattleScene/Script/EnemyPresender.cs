@@ -16,5 +16,18 @@ public class EnemyPresender
     public void DecreaseHp(float damage)
     {
         EnemyModel.DecreaseHp(damage);
+
+        if (EnemyModel.Hp <= 0)
+        {
+            EnemyController.DeadEnemy();
+        }
+
+        EnemyController.hpGauge.value -= damage;
+    }
+
+    public void SelfHealing(float deltatime)
+    { 
+        float heal = EnemyModel.SelfHealing(deltatime);
+        EnemyController.hpGauge.value += heal;
     }
 }
