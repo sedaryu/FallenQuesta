@@ -39,7 +39,7 @@ public class GameDirecter : MonoBehaviour
 
         List<string> enemyProjectileName = new List<string>() {"fire", "fire", "blast"};
 
-        Player = new Player("Sworder", 10.0f, 0.4f); //各プレイヤーキャラのデータはもっと適切な方法で管理する予定
+        Player = new Player("Sworder", 15.0f, 0.4f); //各プレイヤーキャラのデータはもっと適切な方法で管理する予定
         Enemy = new Enemy("Devil", 15.0f, 3.75f, 10, 1, 8, enemyProjectileName); //各エネミーキャラのデータはもっと適切な方法で管理する予定
 
         Enemies.Add(Enemy);

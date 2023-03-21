@@ -40,7 +40,8 @@ public class PlayerController : MonoBehaviour
         {
             move = Speed * Time.deltaTime * 1; //‰E‚ÉˆÚ“®
         }
-        else if (Input.GetKey(KeyCode.Space)) //‚½‚½‚©‚¤
+
+        if (Input.GetKey(KeyCode.Space)) //‚½‚½‚©‚¤
         {
 
         }
