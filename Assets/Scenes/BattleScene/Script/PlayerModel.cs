@@ -52,4 +52,9 @@ public class PlayerModel
     {
         Guts += recover;
     }
+
+    public void DecreaseHp()
+    {
+        Hp -= 0.25f;
+    }
 }

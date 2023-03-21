@@ -9,6 +9,8 @@ public class EnemyModel
     public float MaxHp { get; private set; }
     public float Heal { get; private set; }
     public float Speed { get; private set; }
+    public float Power { get; private set; }
+    public List<string> Projectiles { get; private set; }
 
     public EnemyModel(Enemy enemy)
     {
@@ -17,6 +19,8 @@ public class EnemyModel
         MaxHp = enemy.Hp;
         Heal = enemy.Heal;
         Speed = enemy.Speed;
+        Power = enemy.Power;
+        Projectiles = new List<string>();
     }
 
     public void DecreaseHp(float damage)

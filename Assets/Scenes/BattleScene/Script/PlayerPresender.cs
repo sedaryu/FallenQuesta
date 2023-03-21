@@ -31,4 +31,10 @@ public class PlayerPresender
         float recover = PlayerController.RecoverGuts();
         PlayerModel.RecoverGuts(recover);
     }
+
+    public void DecreaseHp()
+    {
+        PlayerModel.DecreaseHp();
+        Debug.Log(PlayerModel.Hp);
+    }
 }

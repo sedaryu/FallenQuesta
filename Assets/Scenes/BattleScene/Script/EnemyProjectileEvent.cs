@@ -4,30 +4,26 @@ using UnityEngine;
 
 public class EnemyProjectileEvent
 {
-    Dictionary<string, Projectile> EnemyProjectile; 
+    Dictionary<string, Projectile> EnemyProjectile; //場にいるエネミーの放つプロジェクティル全ての情報をまとめたディクショナリ
     private PlayerPresender PlayerPresender { get; set; }
     private Transform PlayerTransform { get; set; }
 
-    public EnemyProjectileEvent(PlayerPresender playerPresender, Transform playerTransform)
+    public EnemyProjectileEvent(PlayerPresender playerPresender, Transform playerTransform, Dictionary<string, Projectile> enemyProjectile)
     {
         PlayerPresender = playerPresender;
         PlayerTransform = playerTransform;
+        EnemyProjectile = enemyProjectile;
     }
 
     public void ThrowProjectile(EnemyController enemyController, string key)
     {
-        float cost = PlayerProjectile[key].Cost;
-
-        if (PlayerPresender.DecreaseGuts(cost)) //プロジェクティルのコストぶんガッツがあるか確認
-        {
-            ProjectileController projectile = playerController.InstanciateProjectile().GetComponent<ProjectileController>();
-            projectile.Constructor(EnemyTransforms, PlayerProjectile[key]);
-            projectile.ProjectileHit += DecreaseEnemyDamage;
-        }
+        ProjectileController projectile = enemyController.InstanciateProjectile().GetComponent<ProjectileController>();
+        projectile.Constructor(PlayerTransform, EnemyProjectile[key]);
+        projectile.ProjectileHitPlayer += DecreasePlayerHp;
     }
 
-    public void DecreaseEnemyDamage(List<int> hits, float damage) //当たり判定の結果、敵にダメージを与える場合
+    public void DecreasePlayerHp() //当たり判定の結果、プレイヤーにダメージを与える場合
     {
-        hits.ForEach(x => EnemyPresender[x].DecreaseHp(damage));
+        PlayerPresender.DecreaseHp();
     }
 }

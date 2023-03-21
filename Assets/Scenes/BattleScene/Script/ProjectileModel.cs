@@ -55,13 +55,13 @@ public class ProjectileModel
             {
                 move[0] = -25f;
                 move[1] = -500f;
-                move[2] = 2f;
+                move[2] = 0;
             }
             else if (Time >= FlyingTime + 0.2f)
             {
                 move[0] = -25f;
                 move[1] = 0f;
-                move[2] = 2f;
+                move[2] = 0f;
             }
         }
 
@@ -84,6 +84,22 @@ public class ProjectileModel
         }
 
         return hits;
+    }
+
+    public bool JudgeHit(float proj_px, float proj_py, float proj_sx, float proj_sy, float target_px, float target_sx)
+    {
+        if (Time >= FlyingTime)
+        {
+            if (proj_py - proj_sy <= -2.5f)
+            {
+                if (Mathf.Abs(proj_px - target_px) < proj_sx + target_sx)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public void UpdateTime(float deltaTime)

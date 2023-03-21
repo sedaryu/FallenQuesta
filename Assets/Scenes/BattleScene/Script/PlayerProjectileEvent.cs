@@ -26,7 +26,7 @@ public class PlayerProjectileEvent
         {
             ProjectileController projectile = playerController.InstanciateProjectile().GetComponent<ProjectileController>();
             projectile.Constructor(EnemyTransforms, PlayerProjectile[key]);
-            projectile.ProjectileHit += DecreaseEnemyDamage;
+            projectile.ProjectileHitEnemy += DecreaseEnemyDamage;
         }
     }
 

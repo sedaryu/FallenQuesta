@@ -27,26 +27,34 @@ public class GameDirecter : MonoBehaviour
     public Dictionary<string, Projectile> Projectile { get; private set; } = new Dictionary<string, Projectile>();
     public Dictionary<KeyCode, Projectile> PlayerProjectile { get; private set; } = new Dictionary<KeyCode, Projectile>();
 
-    private PlayerProjectileEvent PlayerProjectileEvent;
+    private PlayerProjectileEvent playerProjectileEvent;
+    private EnemyProjectileEvent enemyProjectileEvent;
 
 
     private void Awake()
     {
-        Player = new Player("Sworder", 10.0f, 0.4f); //各プレイヤーキャラのデータはもっと適切な方法で管理する予定
-        Enemy = new Enemy("Devil", 15.0f, 3.75f, 10, 1); //各エネミーキャラのデータはもっと適切な方法で管理する予定
         Projectile.Add("knife", new Projectile("knife", true, 2.0f, 0.2f, 0.0625f, 2.5f, 0, -0.8f));
         Projectile.Add("fire", new Projectile("fire", false, 0f, 0f, 3.0f, -8.5f, -90.0f, 0.8f));
-        Projectile.Add("blast", new Projectile("fire", false, 0f, 0f, 0.5f, -8.5f, -90.0f, 0.8f));
+        Projectile.Add("blast", new Projectile("fire", false, 0f, 0f, 0.5f, -8.5f, -90.0f, 0.4f));
+
+        List<string> enemyProjectileName = new List<string>() {"fire", "fire", "blast"};
+
+        Player = new Player("Sworder", 10.0f, 0.4f); //各プレイヤーキャラのデータはもっと適切な方法で管理する予定
+        Enemy = new Enemy("Devil", 15.0f, 3.75f, 10, 1, 8, enemyProjectileName); //各エネミーキャラのデータはもっと適切な方法で管理する予定
 
         Enemies.Add(Enemy);
-        Enemies.Add(Enemy);
+        //Enemies.Add(Enemy);
         PlayerProjectile.Add(KeyCode.UpArrow, Projectile["knife"]);
 
+        //プレイヤーとエネミーのインスタンス生成
         GeneratePlayer();
         GenerateEnemy();
 
-        PlayerProjectileEvent = new PlayerProjectileEvent(PlayerPresender, EnemyPresender, PlayerProjectile, EnemyTransforms);
-        PlayerObject.GetComponent<PlayerController>().UpArrowKey += PlayerProjectileEvent.ThrowProjectile; //イベント設定
+        //イベント設定
+        playerProjectileEvent = new PlayerProjectileEvent(PlayerPresender, EnemyPresender, PlayerProjectile, EnemyTransforms);
+        PlayerObject.GetComponent<PlayerController>().UpArrowKey += playerProjectileEvent.ThrowProjectile;
+        enemyProjectileEvent = new EnemyProjectileEvent(PlayerPresender, PlayerObject.GetComponent<Transform>(), Projectile);
+        EnemyObject.ForEach(x => x.GetComponent<EnemyController>().ThrowProjectile += enemyProjectileEvent.ThrowProjectile);
     }
 
     // Start is called before the first frame update

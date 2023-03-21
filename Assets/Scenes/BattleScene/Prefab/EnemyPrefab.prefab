@@ -478,3 +478,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72d32c0fb0432574084320a4a4ff307c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ProjectilePrefab: {fileID: 6578319496476600549, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}

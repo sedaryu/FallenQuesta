@@ -9,14 +9,17 @@ public class Enemy
     public float Heal { get; private set; } //ˆê•b‚ ‚½‚è‚ÌHp‚ÌƒI[ƒg‰ñ•œ—Ê
     public float Speed { get; private set; }
     public float Span { get; private set; }
-    public List<Projectile> Projectiles { get; private set; }
+    public float Power { get; private set; }
+    public List<string> Projectiles { get; private set; }
 
-    public Enemy(string name, float hp, float heal, float speed, float span)
+    public Enemy(string name, float hp, float heal, float speed, float span, float power, List<string> projectiles)
     {
         Name = name;
         Hp = hp;
         Heal = heal;
         Speed = speed;
         Span = span;
+        Power = power;
+        Projectiles = projectiles;
     }
 }
