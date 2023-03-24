@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameDirecter : MonoBehaviour
 {
     //プレイヤー
-    public Player Player { get; private set; } //未実装
+    public Player Player { get; private set; } //テキストデータとしてResourcesで管理
     public PlayerModel PlayerModel { get; private set; }
     public GameObject PlayerObject { get; private set; }
     public PlayerPresender PlayerPresender { get; private set; }
@@ -14,7 +14,7 @@ public class GameDirecter : MonoBehaviour
     private PlayerGenerator playerGenerator; //プレイヤープレハブからプレイヤーオブジェクトを生成するためのクラス
 
     //エネミー
-    public Enemy Enemy { get; private set; } //未実装
+    public Enemy Enemy { get; private set; } //テキストデータとしてResourcesで管理
     public List<Enemy> Enemies { get; private set; } = new List<Enemy>();
     public List<EnemyModel> EnemyModel { get; private set; } = new List<EnemyModel>();
     public List<GameObject> EnemyObject { get; private set; } = new List<GameObject>();
@@ -24,7 +24,7 @@ public class GameDirecter : MonoBehaviour
     private EnemyGenerator enemyGenerator; //エネミープレハブからエネミーオブジェクトを生成するためのクラス
 
     //プロジェクティル
-    public Dictionary<string, Projectile> Projectile { get; private set; } = new Dictionary<string, Projectile>();
+    public Dictionary<string, Projectile> Projectile { get; private set; } = new Dictionary<string, Projectile>(); //テキストデータとしてResourcesで管理
     public Dictionary<KeyCode, Projectile> PlayerProjectile { get; private set; } = new Dictionary<KeyCode, Projectile>();
 
     private PlayerProjectileEvent playerProjectileEvent;
@@ -33,18 +33,20 @@ public class GameDirecter : MonoBehaviour
 
     private void Awake()
     {
-        Projectile.Add("knife", new Projectile("knife", true, 2.0f, 0.2f, 0.0625f, 2.5f, 0, -0.8f));
-        Projectile.Add("fire", new Projectile("fire", false, 0f, 0f, 3.0f, -8.5f, -90.0f, 0.8f));
-        Projectile.Add("blast", new Projectile("fire", false, 0f, 0f, 0.5f, -8.5f, -90.0f, 0.4f));
+        //テキストデータとしてResourcesで管理
+        Projectile.Add("Knife", new Projectile("Knife", true, 2.0f, 0.2f, 0.0625f, 2.5f, 0, -0.8f));
+        Projectile.Add("Fire", new Projectile("Fire", false, 0f, 0f, 3.0f, -8.5f, -90.0f, 0.8f));
+        Projectile.Add("Blast", new Projectile("Blast", false, 0f, 0f, 0.5f, -8.5f, -90.0f, 0.4f));
 
-        List<string> enemyProjectileName = new List<string>() {"fire", "fire", "blast"};
+        List<string> enemyProjectileName = new List<string>() {"Fire", "Fire", "Blast"};
 
-        Player = new Player("Sworder", 15.0f, 0.4f); //各プレイヤーキャラのデータはもっと適切な方法で管理する予定
-        Enemy = new Enemy("Devil", 15.0f, 3.75f, 10, 1, 8, enemyProjectileName); //各エネミーキャラのデータはもっと適切な方法で管理する予定
+        //テキストデータとしてResourcesで管理
+        Player = new Player("Sworder", 15.0f, 0.4f);
+        Enemy = new Enemy("Devil", 15.0f, 3.75f, 10, 1, 8, enemyProjectileName);
 
         Enemies.Add(Enemy);
         //Enemies.Add(Enemy);
-        PlayerProjectile.Add(KeyCode.UpArrow, Projectile["knife"]);
+        PlayerProjectile.Add(KeyCode.UpArrow, Projectile["Knife"]);
 
         //プレイヤーとエネミーのインスタンス生成
         GeneratePlayer();

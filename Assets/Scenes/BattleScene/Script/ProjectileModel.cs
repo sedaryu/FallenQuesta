@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ProjectileModel
 {
+    public string Name { get; private set; }
     public float Time { get; private set; }
     public bool Player { get; private set; }
     public float Attack { get; private set; }
@@ -15,6 +16,7 @@ public class ProjectileModel
 
     public ProjectileModel(Projectile projectile)
     {
+        Name = projectile.Name;
         Player = projectile.Player;
         Attack = projectile.Attack;
         Cost = projectile.Cost;

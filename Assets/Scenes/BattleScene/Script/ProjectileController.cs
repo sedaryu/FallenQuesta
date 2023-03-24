@@ -57,14 +57,14 @@ public class ProjectileController : MonoBehaviour
             this.transform.position = new Vector3(this.transform.position.x, -3.5f, 0);
             this.transform.localScale = new Vector3(1, 1, 1);
             this.transform.rotation = new Quaternion(0, 0, 0, 0);
-            this.GetComponent<SpriteRenderer>().sprite = Resources.Load("Knife", typeof(Sprite)) as Sprite;
+            this.GetComponent<SpriteRenderer>().sprite = Resources.Load(ProjectileModel.Name, typeof(Sprite)) as Sprite;
         }
         else
         {
             this.transform.position = new Vector3(this.transform.position.x, -1, 0);
             this.transform.localScale = new Vector3(0.2f, 0.2f, 1);
             this.transform.rotation = new Quaternion(180, 0, 0, 0);
-            this.GetComponent<SpriteRenderer>().sprite = Resources.Load("Fire", typeof(Sprite)) as Sprite; //fire;
+            this.GetComponent<SpriteRenderer>().sprite = Resources.Load(ProjectileModel.Name, typeof(Sprite)) as Sprite;
         }
     }
 
