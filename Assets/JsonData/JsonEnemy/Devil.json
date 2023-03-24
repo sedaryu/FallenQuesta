@@ -1,0 +1,9 @@
+{
+	"Name":"Devil",
+	"Hp":15.0,
+	"Heal":3.75,
+	"Speed":10.0,
+	"Span":1.0,
+	"Power":8.0,
+	"Projectiles": [ "Fire", "Fire", "Blast" ]
+}

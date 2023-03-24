@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameDirecter : MonoBehaviour
 {
     //プレイヤー
-    public Player Player { get; private set; } //テキストデータとしてResourcesで管理
+    public Player Player { get; private set; } //Jsonで管理
     public PlayerModel PlayerModel { get; private set; }
     public GameObject PlayerObject { get; private set; }
     public PlayerPresender PlayerPresender { get; private set; }
@@ -14,18 +16,18 @@ public class GameDirecter : MonoBehaviour
     private PlayerGenerator playerGenerator; //プレイヤープレハブからプレイヤーオブジェクトを生成するためのクラス
 
     //エネミー
-    public Enemy Enemy { get; private set; } //テキストデータとしてResourcesで管理
+    public Enemy Enemy { get; private set; } //Jsonでで管理
     public List<Enemy> Enemies { get; private set; } = new List<Enemy>();
     public List<EnemyModel> EnemyModel { get; private set; } = new List<EnemyModel>();
     public List<GameObject> EnemyObject { get; private set; } = new List<GameObject>();
     public List<EnemyPresender> EnemyPresender { get; private set; } = new List<EnemyPresender>();
-    public List<Transform> EnemyTransforms { get; private set; } = new List<Transform>();
+    public List<Transform> EnemyTransforms { get; private set; } = new List<Transform>(); //プレイヤーの攻撃の当たり判定に使用する
 
     private EnemyGenerator enemyGenerator; //エネミープレハブからエネミーオブジェクトを生成するためのクラス
 
     //プロジェクティル
-    public Dictionary<string, Projectile> Projectile { get; private set; } = new Dictionary<string, Projectile>(); //テキストデータとしてResourcesで管理
-    public Dictionary<KeyCode, Projectile> PlayerProjectile { get; private set; } = new Dictionary<KeyCode, Projectile>();
+    public Dictionary<string, Projectile> Projectile { get; private set; } = new Dictionary<string, Projectile>(); //Jsonで管理
+    public Dictionary<KeyCode, Projectile> PlayerProjectile { get; private set; } = new Dictionary<KeyCode, Projectile>(); //キーごとに割り振る
 
     private PlayerProjectileEvent playerProjectileEvent;
     private EnemyProjectileEvent enemyProjectileEvent;
@@ -33,19 +35,18 @@ public class GameDirecter : MonoBehaviour
 
     private void Awake()
     {
-        //テキストデータとしてResourcesで管理
+        //Jsonで管理
         Projectile.Add("Knife", new Projectile("Knife", true, 2.0f, 0.2f, 0.0625f, 2.5f, 0, -0.8f));
         Projectile.Add("Fire", new Projectile("Fire", false, 0f, 0f, 3.0f, -8.5f, -90.0f, 0.8f));
         Projectile.Add("Blast", new Projectile("Blast", false, 0f, 0f, 0.5f, -8.5f, -90.0f, 0.4f));
 
-        List<string> enemyProjectileName = new List<string>() {"Fire", "Fire", "Blast"};
-
-        //テキストデータとしてResourcesで管理
+        //Jsonで管理
         Player = new Player("Sworder", 15.0f, 0.4f);
-        Enemy = new Enemy("Devil", 15.0f, 3.75f, 10, 1, 8, enemyProjectileName);
+        //Enemy = new Enemy("Devil", 15.0f, 3.75f, 10, 1, 8, enemyProjectileName);
 
-        Enemies.Add(Enemy);
-        //Enemies.Add(Enemy);
+        Enemies.Add(JsonConvertToEnemy("Devil"));
+        Enemies.Add(JsonConvertToEnemy("Devil"));
+
         PlayerProjectile.Add(KeyCode.UpArrow, Projectile["Knife"]);
 
         //プレイヤーとエネミーのインスタンス生成
@@ -90,5 +91,22 @@ public class GameDirecter : MonoBehaviour
             EnemyPresender.Add(new EnemyPresender(EnemyModel[i], EnemyObject[i].GetComponent<EnemyController>()));
             EnemyTransforms.Add(EnemyObject[i].GetComponent<Transform>());
         }
+    }
+
+    private Enemy JsonConvertToEnemy(string name)
+    {
+        StreamReader reader;
+        reader = new StreamReader(Application.dataPath + "/JsonData/JsonEnemy" + $"/{name}.json");
+        string data = reader.ReadToEnd();
+        reader.Close();
+
+        Debug.Log(data);
+
+        JsonEnemy enemy = JsonUtility.FromJson<JsonEnemy>(data);
+
+        Debug.Log(enemy.Name);
+        Debug.Log(enemy.Projectiles);
+
+        return new Enemy(enemy.Name, enemy.Hp, enemy.Heal, enemy.Speed, enemy.Span, enemy.Power, enemy.Projectiles);
     }
 }
