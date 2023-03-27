@@ -9,7 +9,9 @@ public class PlayerController : MonoBehaviour
     public float Speed { get; private set; }
     public float Recover { get; private set; }
 
-    public event Action<PlayerController, KeyCode> UpArrowKey;
+    public List<string> Projectiles { get; private set; }
+
+    public event Action<PlayerController, string> UpArrowKey;
     private GutsGaugeController GutsGauge;
 
     [SerializeField] private GameObject ProjectilePrefab;
@@ -18,6 +20,7 @@ public class PlayerController : MonoBehaviour
     {
         Speed = player.Speed;
         Recover = player.Recover;
+        Projectiles = player.Projectiles;
     }
 
     // Start is called before the first frame update
@@ -47,7 +50,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            UpArrowKey.Invoke(this, KeyCode.UpArrow);
+            UpArrowKey.Invoke(this, Projectiles[0]);
         }
 
         if (-9 <= this.transform.position.x + move && this.transform.position.x + move <= 9) //ˆÚ“®‚ª§ŒÀ”ÍˆÍ“à‚ÉŽû‚Ü‚Á‚Ä‚¢‚é‚©‚ð”»’è

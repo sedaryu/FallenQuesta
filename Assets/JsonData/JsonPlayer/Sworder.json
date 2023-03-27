@@ -1,0 +1,6 @@
+{
+	"Name": "Sworder",
+	"Speed": 15.0,
+	"Recover": 0.4,
+	"Projectiles": [ "Knife" ]
+}

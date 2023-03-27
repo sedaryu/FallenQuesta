@@ -6,26 +6,26 @@ public class PlayerProjectileEvent
 {
     private PlayerPresenter PlayerPresender { get; set; }
     private List<EnemyPresenter> EnemyPresender { get; set; }
-    private Dictionary<KeyCode, Projectile> PlayerProjectile { get; set; }
+    private Dictionary<string, Projectile> Projectile { get; set; }
     private List<Transform> EnemyTransforms { get; set; }
 
     public PlayerProjectileEvent(PlayerPresenter playerPresender, List<EnemyPresenter> enemyPresender, 
-                                 Dictionary<KeyCode, Projectile> playerProjectile, List<Transform> enemyTransforms)
+                                 Dictionary<string, Projectile> projectile, List<Transform> enemyTransforms)
     {
         PlayerPresender = playerPresender;
         EnemyPresender = enemyPresender;
-        PlayerProjectile = playerProjectile;
+        Projectile = projectile;
         EnemyTransforms = enemyTransforms;
     }
 
-    public void ThrowProjectile(PlayerController playerController, KeyCode key)
+    public void ThrowProjectile(PlayerController playerController, string key)
     {
-        float cost = PlayerProjectile[key].Cost;
+        float cost = Projectile[key].Cost;
 
         if (PlayerPresender.DecreaseGuts(cost)) //プロジェクティルのコストぶんガッツがあるか確認
         {
             ProjectileController projectile = playerController.InstanciateProjectile().GetComponent<ProjectileController>();
-            projectile.Constructor(EnemyTransforms, PlayerProjectile[key]);
+            projectile.Constructor(EnemyTransforms, Projectile[key]);
             projectile.ProjectileHitEnemy += DecreaseEnemyDamage;
         }
     }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,10 @@ using UnityEngine.UI;
 
 public class GameDirecter : MonoBehaviour
 {
+    [SerializeField] private string PlayerSelect;
+    [SerializeField] private List<string> EnemySelect;
+
+
     //プレイヤー
     public Player Player { get; private set; }
     public PlayerModel PlayerModel { get; private set; }
@@ -50,19 +55,15 @@ public class GameDirecter : MonoBehaviour
         Projectiles = JsonConvertToProjectiles();
 
         //Jsonで管理
-        Player = new Player("Sworder", 15.0f, 0.4f);
-
-        Enemies.Add(JsonConvertToEnemy("Slime"));
-        Enemies.Add(JsonConvertToEnemy("Devil"));
-
-        PlayerProjectile.Add(KeyCode.UpArrow, Projectiles["Knife"]);
+        Player = JsonConvertPlayer(PlayerSelect);
+        Enemies = JsonConvertToEnemies(EnemySelect);
 
         //プレイヤーとエネミーの各オブジェクト、コンポーネント、スクリプト生成
         GeneratePlayer();
         GenerateEnemy();
 
         //イベント設定
-        playerProjectileEvent = new PlayerProjectileEvent(PlayerPresenter, EnemyPresenter, PlayerProjectile, EnemyTransforms);
+        playerProjectileEvent = new PlayerProjectileEvent(PlayerPresenter, EnemyPresenter, Projectiles, EnemyTransforms);
         PlayerObject.GetComponent<PlayerController>().UpArrowKey += playerProjectileEvent.ThrowProjectile;
         enemyProjectileEvent = new EnemyProjectileEvent(PlayerPresenter, PlayerObject.GetComponent<Transform>(), Projectiles);
         EnemyObject.ForEach(x => x.GetComponent<EnemyController>().ThrowProjectile += enemyProjectileEvent.ThrowProjectile);
@@ -101,21 +102,30 @@ public class GameDirecter : MonoBehaviour
         }
     }
 
-    private Enemy JsonConvertToEnemy(string name)
+    private Player JsonConvertPlayer(string name)
     {
         StreamReader reader;
-        reader = new StreamReader(Application.dataPath + "/JsonData/JsonEnemy" + $"/{name}.json");
+        reader = new StreamReader(Application.dataPath + "/JsonData/JsonPlayer" + $"/{name}.json");
         string data = reader.ReadToEnd();
         reader.Close();
+        JsonPlayer player = JsonUtility.FromJson<JsonPlayer>(data);
+        return new Player(player.Name, player.Speed, player.Recover, player.Projectiles);
+    }
 
-        Debug.Log(data);
+    private List<Enemy> JsonConvertToEnemies(List<string> name)
+    {
+        List<Enemy> enemies = new List<Enemy>();
+        StreamReader reader;
+        for (int i = 0; i < name.Count; i++)
+        {
+            reader = new StreamReader(Application.dataPath + "/JsonData/JsonEnemy" + $"/{name[i]}.json");
+            string data = reader.ReadToEnd();
+            reader.Close();
+            JsonEnemy enemy = JsonUtility.FromJson<JsonEnemy>(data);
+            enemies.Add(new Enemy(enemy.Name, enemy.Hp, enemy.Heal, enemy.Speed, enemy.Span, enemy.Power, enemy.Projectiles));
+        }
 
-        JsonEnemy enemy = JsonUtility.FromJson<JsonEnemy>(data);
-
-        Debug.Log(enemy.Name);
-        Debug.Log(enemy.Projectiles);
-
-        return new Enemy(enemy.Name, enemy.Hp, enemy.Heal, enemy.Speed, enemy.Span, enemy.Power, enemy.Projectiles);
+        return enemies;
     }
 
     private Dictionary<string, Projectile> JsonConvertToProjectiles()
