@@ -3,7 +3,7 @@
 	"Hp":10.0,
 	"Heal":2.25,
 	"Speed":2.5,
-	"Span":1.0,
+	"Span":3.0,
 	"Power":2.0,
 	"Projectiles": [ "Blast","Blast" ]
 }

@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     public List<string> Projectiles { get; private set; }
 
     public event Action<PlayerController, string> UpArrowKey;
+    public event Action<PlayerController, string> LeftArrowKey;
+    public event Action<PlayerController, string> DownArrowKey;
+    public event Action<PlayerController, string> RightArrowKey;
     private GutsGaugeController GutsGauge;
 
     [SerializeField] private GameObject ProjectilePrefab;
@@ -51,6 +54,29 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             UpArrowKey.Invoke(this, Projectiles[0]);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if (Projectiles.Count > 1)
+            {
+                UpArrowKey.Invoke(this, Projectiles[1]);
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (Projectiles.Count > 2)
+            { 
+                UpArrowKey.Invoke(this, Projectiles[2]);
+            }
+                
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if (Projectiles.Count > 3)
+            { 
+                UpArrowKey.Invoke(this, Projectiles[3]);
+            }
+            
         }
 
         if (-9 <= this.transform.position.x + move && this.transform.position.x + move <= 9) //ˆÚ“®‚ª§ŒÀ”ÍˆÍ“à‚ÉŽû‚Ü‚Á‚Ä‚¢‚é‚©‚ð”»’è
