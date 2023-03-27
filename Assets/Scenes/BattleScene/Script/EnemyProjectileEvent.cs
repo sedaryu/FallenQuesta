@@ -5,10 +5,10 @@ using UnityEngine;
 public class EnemyProjectileEvent
 {
     Dictionary<string, Projectile> EnemyProjectile; //場にいるエネミーの放つプロジェクティル全ての情報をまとめたディクショナリ
-    private PlayerPresender PlayerPresender { get; set; }
+    private PlayerPresenter PlayerPresender { get; set; }
     private Transform PlayerTransform { get; set; }
 
-    public EnemyProjectileEvent(PlayerPresender playerPresender, Transform playerTransform, Dictionary<string, Projectile> enemyProjectile)
+    public EnemyProjectileEvent(PlayerPresenter playerPresender, Transform playerTransform, Dictionary<string, Projectile> enemyProjectile)
     {
         PlayerPresender = playerPresender;
         PlayerTransform = playerTransform;

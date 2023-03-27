@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyPresender
+public class EnemyPresenter
 {
     private EnemyModel EnemyModel { get; set; }
     private EnemyController EnemyController { get; set; }
 
-    public EnemyPresender(EnemyModel enemyModel, EnemyController enemyController)
+    public EnemyPresenter(EnemyModel enemyModel, EnemyController enemyController)
     {
         EnemyModel = enemyModel;
         EnemyController = enemyController;

@@ -1,0 +1,10 @@
+{
+  "Name": "Fire",
+  "Player": false,
+  "Attack": 0,
+  "Cost": 0,
+  "FlyingTime": 3.0,
+  "Speed": -8.5,
+  "Rotation": -90.0,
+  "Scale": 0.8
+}

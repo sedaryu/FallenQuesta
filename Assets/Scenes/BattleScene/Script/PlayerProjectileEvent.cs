@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PlayerProjectileEvent
 {
-    private PlayerPresender PlayerPresender { get; set; }
-    private List<EnemyPresender> EnemyPresender { get; set; }
+    private PlayerPresenter PlayerPresender { get; set; }
+    private List<EnemyPresenter> EnemyPresender { get; set; }
     private Dictionary<KeyCode, Projectile> PlayerProjectile { get; set; }
     private List<Transform> EnemyTransforms { get; set; }
 
-    public PlayerProjectileEvent(PlayerPresender playerPresender, List<EnemyPresender> enemyPresender, 
+    public PlayerProjectileEvent(PlayerPresenter playerPresender, List<EnemyPresenter> enemyPresender, 
                                  Dictionary<KeyCode, Projectile> playerProjectile, List<Transform> enemyTransforms)
     {
         PlayerPresender = playerPresender;
