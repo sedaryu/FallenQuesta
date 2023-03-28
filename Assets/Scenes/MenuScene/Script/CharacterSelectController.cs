@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System;
 
-public class CharacterSelectController : MonoBehaviour
+public class CharacterSelectController : MonoBehaviour, IPointerClickHandler
 {
-    public bool Player { get; private set; } //味方キャラか敵キャラか
-    public List<string> Characters { get; private set; } //キャラ名を格納
+    [SerializeField] private bool Player; //味方キャラか敵キャラか
+    [SerializeField] public List<string> Characters = new List<string>(); //キャラ名を格納
 
-    private int selectedChara = 0; //選択されているキャラのインデックス番号
-    private SpriteRenderer characterImage; //選択されているキャラの画像を表示
+    [NonSerialized] public int selectedChara = 0; //選択されているキャラのインデックス番号
+    private Image characterImage; //選択されているキャラの画像を表示
 
     private Text characterName; //選択されているキャラの名前を表示
 
@@ -21,9 +24,14 @@ public class CharacterSelectController : MonoBehaviour
 
     private void Start()
     {
-        characterImage = this.GetComponent<SpriteRenderer>();
+        characterImage = this.GetComponent<Image>();
         characterName = this.transform.GetChild(0).gameObject.GetComponent<Text>();
         UpdateChara();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        ChangeChara();
     }
 
     //選択キャラの表示を更新
@@ -35,7 +43,15 @@ public class CharacterSelectController : MonoBehaviour
         }
         else
         {
-            characterImage.sprite = Resources.Load($"Enemy/{Characters[selectedChara]}", typeof(Sprite)) as Sprite;
+            if (selectedChara == 0)
+            {
+                characterImage.sprite = null;
+            }
+            else
+            { 
+                characterImage.sprite = Resources.Load($"Enemy/{Characters[selectedChara]}", typeof(Sprite)) as Sprite;
+            }
+            
         }
 
         characterName.text = Characters[selectedChara];
@@ -52,5 +68,11 @@ public class CharacterSelectController : MonoBehaviour
         }
 
         UpdateChara();
+    }
+
+    //選択されているキャラ名のStringを返す
+    public string SelectedCharaName()
+    {
+        return Characters[selectedChara];
     }
 }

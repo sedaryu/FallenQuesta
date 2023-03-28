@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public float Defense { get; private set; }
     public float Speed { get; private set; }
     public float Recover { get; private set; }
     public List<string> Projectiles { get; private set; }
@@ -15,7 +16,8 @@ public class PlayerController : MonoBehaviour
     public event Action<PlayerController, string> DownArrowKey;
     public event Action<PlayerController, string> RightArrowKey;
 
-    private GutsGaugeController GutsGauge; //UI
+    private HpGaugeController HpGauge; //Hpを表示するUI
+    private GutsGaugeController GutsGauge; //Gutsを表示するUI
     private SpriteRenderer spriteRenderer; //Prefabにアタッチされているスプライトレンダラーを格納
     private Sprite playerImage; //立ち絵画像
 
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     public void Constructor(Player player)
     {
+        Defense = player.Defense;
         Speed = player.Speed;
         Recover = player.Recover;
         Projectiles = player.Projectiles;
@@ -33,6 +36,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         this.transform.position = new Vector3(0, -3.5f, 0); //初期位置を設定
+        HpGauge = GameObject.Find("HpGauge").GetComponent<HpGaugeController>();
+        HpGauge.DeadEnd += PlayerDead;
         GutsGauge = GameObject.Find("GutsGauge").GetComponent<GutsGaugeController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = playerImage;
@@ -52,11 +57,7 @@ public class PlayerController : MonoBehaviour
             move = Speed * Time.deltaTime * 1; //右に移動
         }
 
-        if (Input.GetKey(KeyCode.Space)) //たたかう
-        {
-
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             UpArrowKey.Invoke(this, Projectiles[0]);
         }
@@ -90,10 +91,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //プロジェクティルを生成
+    //Projectileを生成
     public GameObject InstanciateProjectile()
     {
         return Instantiate(ProjectilePrefab, this.transform.position, Quaternion.identity);
+    }
+
+    public void DecreaseHp()
+    {
+        HpGauge.Value -= Defense;
     }
 
     public void DecreaseGuts(float guts)
@@ -106,5 +112,10 @@ public class PlayerController : MonoBehaviour
         float recover = Recover * Time.deltaTime;
         GutsGauge.Value += recover;
         return recover;
+    }
+
+    public void PlayerDead()
+    { 
+        this.gameObject.SetActive(false);
     }
 }

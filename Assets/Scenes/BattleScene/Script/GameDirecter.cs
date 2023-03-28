@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -20,8 +21,8 @@ using UnityEngine.UI;
 
 public class GameDirecter : MonoBehaviour
 {
-    [SerializeField] private string PlayerSelect;
-    [SerializeField] private List<string> EnemySelect;
+    private string SelectedPlayer;
+    private List<string> SelectedEnemies = new List<string>();
 
 
     //プレイヤー
@@ -48,15 +49,26 @@ public class GameDirecter : MonoBehaviour
     private PlayerProjectileEvent playerProjectileEvent;
     private EnemyProjectileEvent enemyProjectileEvent;
 
+    //ゲームオーバー
+    private int killCount = 0;
+    private bool gameOver = false;
 
     private void Awake()
     {
         //Jsonで管理
         Projectiles = JsonConvertToProjectiles();
 
+        //MenuSceneで選ばれたキャラクターを代入
+        SelectedPlayer = PlayerPrefs.GetString("Player");
+        for (int i = 0; i < PlayerPrefs.GetInt("EnemyCount"); i++)
+        {
+            SelectedEnemies.Add(PlayerPrefs.GetString($"Enemies{i}"));
+        }
+        
+
         //Jsonで管理
-        Player = JsonConvertPlayer(PlayerSelect);
-        Enemies = JsonConvertToEnemies(EnemySelect);
+        Player = JsonConvertPlayer(SelectedPlayer);
+        Enemies = JsonConvertToEnemies(SelectedEnemies);
 
         //プレイヤーとエネミーの各オブジェクト、コンポーネント、スクリプト生成
         GeneratePlayer();
@@ -72,7 +84,7 @@ public class GameDirecter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -80,6 +92,8 @@ public class GameDirecter : MonoBehaviour
     {
         EnemyPresenter.ForEach(x => x.SelfHealing(Time.deltaTime));
         PlayerPresenter.RecoverGuts();
+
+        GameOver();
     }
 
     private void GeneratePlayer()
@@ -95,6 +109,7 @@ public class GameDirecter : MonoBehaviour
         enemyGenerator = GetComponent<EnemyGenerator>();
         Enemies.ForEach(x => EnemyModel.Add(new EnemyModel(x)));
         Enemies.ForEach(x => EnemyObject.Add(enemyGenerator.Generate(x)));
+        EnemyObject.ForEach(x => x.GetComponent<EnemyController>().EnemyDead += KillEnemy);
         for (int i = 0; i < Enemies.Count; i++)
         {
             EnemyPresenter.Add(new EnemyPresenter(EnemyModel[i], EnemyObject[i].GetComponent<EnemyController>()));
@@ -109,13 +124,14 @@ public class GameDirecter : MonoBehaviour
         string data = reader.ReadToEnd();
         reader.Close();
         JsonPlayer player = JsonUtility.FromJson<JsonPlayer>(data);
-        return new Player(player.Name, player.Speed, player.Recover, player.Projectiles);
+        return new Player(player.Name, player.Defense, player.Speed, player.Recover, player.Projectiles);
     }
 
     private List<Enemy> JsonConvertToEnemies(List<string> name)
     {
         List<Enemy> enemies = new List<Enemy>();
         StreamReader reader;
+
         for (int i = 0; i < name.Count; i++)
         {
             reader = new StreamReader(Application.dataPath + "/JsonData/JsonEnemy" + $"/{name[i]}.json");
@@ -144,5 +160,33 @@ public class GameDirecter : MonoBehaviour
         }
 
         return projectiles;
+    }
+
+    private void GameOver() //ゲームオーバー演出
+    {
+        if (PlayerObject.activeInHierarchy == false && !gameOver) //Playerのオブジェクトが非アクティブになった場合
+        {
+            gameOver = true;
+            GameObject.Find("background_beach").GetComponent<SpriteRenderer>().color = Color.red;
+            StartCoroutine(BackToMenu());
+        }
+
+        if (killCount == Enemies.Count && !gameOver)
+        {
+            gameOver = true;
+            GameObject.Find("Canvas").transform.Find("FieldConquested").gameObject.SetActive(true);
+            StartCoroutine(BackToMenu());
+        }
+    }
+
+    public void KillEnemy()
+    { 
+        killCount++;
+    }
+
+    IEnumerator BackToMenu()
+    {
+        yield return new WaitForSeconds(7.5f);
+        SceneManager.LoadScene("MenuScene");
     }
 }

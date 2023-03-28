@@ -35,6 +35,6 @@ public class PlayerPresenter
     public void DecreaseHp()
     {
         PlayerModel.DecreaseHp();
-        Debug.Log(PlayerModel.Hp);
+        PlayerController.DecreaseHp();
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class JsonPlayer
 {
     public string Name;
+    public float Defense;
     public float Speed;
     public float Recover;
     public List<string> Projectiles;

@@ -1,14 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GutsGaugeController : MonoBehaviour
+public class HpGaugeController : MonoBehaviour
 {
-    float _value = 0;
+    float _value = 1;
 
     public float Value
-    { 
+    {
         get => _value;
         set
         {
@@ -21,24 +22,30 @@ public class GutsGaugeController : MonoBehaviour
                 _value = 1;
             }
             else
-            { 
+            {
                 _value = value;
             }
         }
     }
 
-    private Slider[] gutsGauge;
+    private Slider[] hpGauge;
+    public event Action DeadEnd; //HpÇ™0à»â∫Ç…Ç»Ç¡ÇΩç€ÇÃÉCÉxÉìÉg
 
     // Start is called before the first frame update
     void Start()
     {
-        gutsGauge = GetComponentsInChildren<Slider>();
+        hpGauge = GetComponentsInChildren<Slider>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        gutsGauge[0].value = Value;
-        gutsGauge[1].value = Value;
+        hpGauge[0].value = Value;
+        hpGauge[1].value = Value;
+
+        if (Value <= 0) //HpÇ™0à»â∫Ç©îªíË
+        {
+            DeadEnd.Invoke();
+        }
     }
 }
