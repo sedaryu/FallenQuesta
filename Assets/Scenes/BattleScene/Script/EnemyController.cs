@@ -23,6 +23,9 @@ public class EnemyController : MonoBehaviour
 
     public event Action<EnemyController, string> ThrowProjectile;
 
+    private SpriteRenderer spriteRenderer; //Prefabにアタッチされているスプライトレンダラーを格納
+    private Sprite enemyImage; //立ち絵画像
+
     [System.NonSerialized] public Slider hpGauge;
     [SerializeField] private GameObject ProjectilePrefab;
 
@@ -33,6 +36,7 @@ public class EnemyController : MonoBehaviour
         Span = enemy.Span;
         Power = enemy.Power;
         Projectiles = enemy.Projectiles;
+        enemyImage = Resources.Load($"Enemy/{enemy.Name}", typeof(Sprite)) as Sprite;
     }
 
     // Start is called before the first frame update
@@ -42,6 +46,8 @@ public class EnemyController : MonoBehaviour
         hpGauge　= this.gameObject.GetComponentInChildren<Slider>();
         hpGauge.maxValue = MaxHp;
         hpGauge.value = MaxHp;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = enemyImage;
     }
 
     // Update is called once per frame

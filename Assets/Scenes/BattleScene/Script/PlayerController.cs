@@ -8,14 +8,16 @@ public class PlayerController : MonoBehaviour
 {
     public float Speed { get; private set; }
     public float Recover { get; private set; }
-
     public List<string> Projectiles { get; private set; }
 
     public event Action<PlayerController, string> UpArrowKey;
     public event Action<PlayerController, string> LeftArrowKey;
     public event Action<PlayerController, string> DownArrowKey;
     public event Action<PlayerController, string> RightArrowKey;
-    private GutsGaugeController GutsGauge;
+
+    private GutsGaugeController GutsGauge; //UI
+    private SpriteRenderer spriteRenderer; //Prefabにアタッチされているスプライトレンダラーを格納
+    private Sprite playerImage; //立ち絵画像
 
     [SerializeField] private GameObject ProjectilePrefab;
 
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour
         Speed = player.Speed;
         Recover = player.Recover;
         Projectiles = player.Projectiles;
+        playerImage = Resources.Load($"Player/{player.Name}", typeof(Sprite)) as Sprite;
     }
 
     // Start is called before the first frame update
@@ -31,6 +34,8 @@ public class PlayerController : MonoBehaviour
     {
         this.transform.position = new Vector3(0, -3.5f, 0); //初期位置を設定
         GutsGauge = GameObject.Find("GutsGauge").GetComponent<GutsGaugeController>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = playerImage;
     }
 
     // Update is called once per frame
