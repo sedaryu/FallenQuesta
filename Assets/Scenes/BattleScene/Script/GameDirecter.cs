@@ -21,44 +21,44 @@ using UnityEngine.UI;
 
 public class GameDirecter : MonoBehaviour
 {
-    private string SelectedPlayer;
-    private List<string> SelectedEnemies = new List<string>();
+    private string SelectedPlayer; //MenuSceneで選択されたプレイヤー名を代入
+    private List<string> SelectedEnemies = new List<string>(); //MenuSceneで選択されたエネミー名を代入
 
 
     //プレイヤー
-    public Player Player { get; private set; }
-    public PlayerModel PlayerModel { get; private set; }
+    public Player Player { get; private set; } //プレイヤーの初期ステータスを格納
+    public PlayerModel PlayerModel { get; private set; } //プレイヤーのステータス変化を処理
     public GameObject PlayerObject { get; private set; } //生成されたPlayerPrefabをここに格納
-    public PlayerPresenter PlayerPresenter { get; private set; }
+    public PlayerPresenter PlayerPresenter { get; private set; } //PlayerModelとPlayerController間の処理のやり取りを受け持つ
 
     private PlayerGenerator playerGenerator; //PlayerPrefabからプレイヤーオブジェクトを生成するためのクラス
 
     //エネミー
-    public List<Enemy> Enemies { get; private set; } = new List<Enemy>();
-    public List<EnemyModel> EnemyModel { get; private set; } = new List<EnemyModel>();
+    public List<Enemy> Enemies { get; private set; } = new List<Enemy>(); //エネミーの初期ステータスを格納
+    public List<EnemyModel> EnemyModel { get; private set; } = new List<EnemyModel>(); //エネミーのステータス変化を処理
     public List<GameObject> EnemyObject { get; private set; } = new List<GameObject>(); //生成されたEnemyPrefabをここに格納
-    public List<EnemyPresenter> EnemyPresenter { get; private set; } = new List<EnemyPresenter>();
-    public List<Transform> EnemyTransforms { get; private set; } = new List<Transform>(); //プレイヤーの攻撃の当たり判定に使用する
+    public List<EnemyPresenter> EnemyPresenter { get; private set; } = new List<EnemyPresenter>(); //EnemyModelとEnemyController間の処理のやり取りを受け持つ
+    public List<Transform> EnemyTransforms { get; private set; } = new List<Transform>(); //エネミーの当たり判定に使用する
 
     private EnemyGenerator enemyGenerator; //EnemyPrefabからエネミーオブジェクトを生成するためのクラス
 
     //プロジェクティル
-    public Dictionary<string, Projectile> Projectiles { get; private set; } = new Dictionary<string, Projectile>(); //Jsonで管理
+    public Dictionary<string, Projectile> Projectiles { get; private set; } = new Dictionary<string, Projectile>(); //フィールド上で使うProjectileを格納
     public Dictionary<KeyCode, Projectile> PlayerProjectile { get; private set; } = new Dictionary<KeyCode, Projectile>(); //キーごとに割り振る
 
-    private PlayerProjectileEvent playerProjectileEvent;
-    private EnemyProjectileEvent enemyProjectileEvent;
+    private PlayerProjectileEvent playerProjectileEvent; //プレイヤーがProjectileを投げる際のイベント
+    private EnemyProjectileEvent enemyProjectileEvent; //エネミーがProjectileを投げる際のイベント
 
     //ゲームオーバー
-    private int killCount = 0;
-    private bool gameOver = false;
+    private int killCount = 0; //撃破した敵の数を記録
+    private bool gameOver = false; //ゲームクリア・ゲームオーバーの際にtrueとなる
 
     private void Awake()
     {
-        //Jsonで管理
+        //JsonFileを参照し、各Projectileのステータスを記録
         Projectiles = JsonConvertToProjectiles();
 
-        //MenuSceneで選ばれたキャラクターを代入
+        //MenuSceneで選ばれたキャラクター名を代入
         SelectedPlayer = PlayerPrefs.GetString("Player");
         for (int i = 0; i < PlayerPrefs.GetInt("EnemyCount"); i++)
         {
@@ -66,11 +66,11 @@ public class GameDirecter : MonoBehaviour
         }
         
 
-        //Jsonで管理
+        //JsonFileを参照し、各Player・Enemyのステータスを記録する
         Player = JsonConvertPlayer(SelectedPlayer);
         Enemies = JsonConvertToEnemies(SelectedEnemies);
 
-        //プレイヤーとエネミーの各オブジェクト、コンポーネント、スクリプト生成
+        //各Player・Enemyのオブジェクト、コンポーネント、スクリプトを生成
         GeneratePlayer();
         GenerateEnemy();
 
@@ -90,17 +90,17 @@ public class GameDirecter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EnemyPresenter.ForEach(x => x.SelfHealing(Time.deltaTime));
-        PlayerPresenter.RecoverGuts();
+        EnemyPresenter.ForEach(x => x.SelfHealing(Time.deltaTime)); //エネミーのHp自己回復処理
+        PlayerPresenter.RecoverGuts(); //プレイヤーのガッツ自動回復処理
 
-        GameOver();
+        GameOver(); //ゲームオーバーかどうかを判定
     }
 
     private void GeneratePlayer()
     {
-        playerGenerator = GetComponent<PlayerGenerator>();
-        PlayerModel = new PlayerModel(Player);
-        PlayerObject = playerGenerator.Generate(Player);
+        playerGenerator = GetComponent<PlayerGenerator>(); //PlayerGeneratorスクリプトはあらかじめGameDirecterにアタッチされている
+        PlayerModel = new PlayerModel(Player); //Playerの各初期ステータスをPlayerModelへ記録
+        PlayerObject = playerGenerator.Generate(Player); //PlayerPrefabをインスタンスし、PlayerのPlayerControllerへ各初期ステータスを記録
         PlayerPresenter = new PlayerPresenter(PlayerModel, PlayerObject.GetComponent<PlayerController>());
     }
 
