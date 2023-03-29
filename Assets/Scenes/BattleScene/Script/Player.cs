@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player
 {
-    public string Name { get; private set; }
+    public string Name { get; private set; } //Playerの名前
     public float Defense { get; private set; } //被ダメージ減少率
     public float Speed { get; private set; } //移動速度
     public float Recover { get; private set; } //一秒間に回復するガッツ量

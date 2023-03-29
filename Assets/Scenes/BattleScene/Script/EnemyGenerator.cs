@@ -9,7 +9,7 @@ public class EnemyGenerator : MonoBehaviour
     public GameObject Generate(Enemy enemy)
     {
         GameObject enemyObject = Instantiate(enemyPrefab);
-        enemyObject.GetComponent<EnemyController>().Constructor(enemy); //スピードやスプライトなどのデータを設定
+        enemyObject.GetComponent<EnemyController>().Constructor(enemy); //各ステータスをEnemyControllerへ渡す
         return enemyObject;
     }
 }

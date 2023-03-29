@@ -1,7 +1,7 @@
 {
 	"Name":"Devil",
-	"Hp":15.0,
-	"Heal":3.0,
+	"Hp":10.0,
+	"Heal":2.5,
 	"Speed":10.0,
 	"Span":1.0,
 	"Power":8.0,

@@ -74,7 +74,7 @@ public class GameDirecter : MonoBehaviour
         GeneratePlayer();
         GenerateEnemy();
 
-        //イベント設定
+        //各Player・Enemyのイベント設定
         playerProjectileEvent = new PlayerProjectileEvent(PlayerPresenter, EnemyPresenter, Projectiles, EnemyTransforms);
         PlayerObject.GetComponent<PlayerController>().UpArrowKey += playerProjectileEvent.ThrowProjectile;
         enemyProjectileEvent = new EnemyProjectileEvent(PlayerPresenter, PlayerObject.GetComponent<Transform>(), Projectiles);

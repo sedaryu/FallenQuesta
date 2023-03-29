@@ -29,7 +29,7 @@ public class HpGaugeController : MonoBehaviour
     }
 
     private Slider[] hpGauge;
-    public event Action DeadEnd; //Hpが0以下になった際のイベント
+    public event Action DeadEnd; //Hpが0以下になった際(GameOver)のイベント
 
     // Start is called before the first frame update
     void Start()

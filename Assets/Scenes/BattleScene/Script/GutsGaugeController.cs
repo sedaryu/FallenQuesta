@@ -12,11 +12,11 @@ public class GutsGaugeController : MonoBehaviour
         get => _value;
         set
         {
-            if (value < 0)
+            if (value < 0) //HpGaugeがマイナスになるのを制限
             {
                 _value = 0;
             }
-            else if (value > 1)
+            else if (value > 1) //HpGaugeが1より大きくなるのを制限
             {
                 _value = 1;
             }
@@ -32,13 +32,13 @@ public class GutsGaugeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gutsGauge = GetComponentsInChildren<Slider>();
+        gutsGauge = GetComponentsInChildren<Slider>(); //子オブジェクトからSliderを取得
     }
 
     // Update is called once per frame
     void Update()
     {
-        gutsGauge[0].value = Value;
-        gutsGauge[1].value = Value;
+        gutsGauge[0].value = Value; //LeftSliderの値を更新
+        gutsGauge[1].value = Value; //RightSliderの値を更新
     }
 }

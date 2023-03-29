@@ -15,26 +15,26 @@ public class PlayerPresenter
 
     public bool DecreaseGuts(float guts)
     {
-        if (PlayerModel.DecreaseGuts(guts))
+        if (PlayerModel.DecreaseGuts(guts)) //渡されたぶんの残りガッツがあればtrue
         {
-            PlayerController.DecreaseGuts(guts);
+            PlayerController.DecreaseGuts(guts); //残りガッツに応じてUIを更新
             return true;
         }
         else
         {
-            return false;
+            return false; //渡されたぶんの残りガッツが無ければfalseを返す
         }
     }
 
     public void RecoverGuts()
     { 
-        float recover = PlayerController.RecoverGuts();
-        PlayerModel.RecoverGuts(recover);
+        float recover = PlayerController.RecoverGuts(); //時間経過で自動でガッツが回復
+        PlayerModel.RecoverGuts(recover); //回復したガッツに応じてUIが更新
     }
 
     public void DecreaseHp()
     {
-        PlayerModel.DecreaseHp();
-        PlayerController.DecreaseHp();
+        PlayerModel.DecreaseHp(); //Hpが減少
+        PlayerController.DecreaseHp(); //残りHpに応じてUIが更新
     }
 }

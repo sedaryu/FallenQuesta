@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnemyProjectileEvent
 {
-    Dictionary<string, Projectile> Projectile; //プロジェクティル全ての情報をまとめたディクショナリ
-    private PlayerPresenter PlayerPresender { get; set; }
-    private Transform PlayerTransform { get; set; }
+    Dictionary<string, Projectile> Projectile; //Projectile全ての情報をまとめたDictionary
+    private PlayerPresenter PlayerPresender { get; set; } //プレイヤーがダメージを受けた際に使用
+    private Transform PlayerTransform { get; set; } //当たり判定に使用
 
     public EnemyProjectileEvent(PlayerPresenter playerPresender, Transform playerTransform, Dictionary<string, Projectile> projectile)
     {
@@ -15,6 +15,7 @@ public class EnemyProjectileEvent
         Projectile = projectile;
     }
 
+    //keyを用いてProjectileDictionaryから指定したProjectileのステータスを取得し、生成されたProjectilePrefabに渡す
     public void ThrowProjectile(EnemyController enemyController, string key)
     {
         ProjectileController projectile = enemyController.InstanciateProjectile().GetComponent<ProjectileController>();

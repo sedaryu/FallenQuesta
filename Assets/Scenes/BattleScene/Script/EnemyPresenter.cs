@@ -16,19 +16,19 @@ public class EnemyPresenter
 
     public void DecreaseHp(float damage)
     {
-        EnemyModel.DecreaseHp(damage);
+        EnemyModel.DecreaseHp(damage); //受けたダメージぶんHpが減少
 
-        if (EnemyModel.Hp <= 0)
+        if (EnemyModel.Hp <= 0) //Hpが0以下になった場合
         {
-            EnemyController.DeadEnemy();
+            EnemyController.DeadEnemy(); //死亡(非アクティブ化)
         }
 
-        EnemyController.hpGauge.value -= damage;
+        EnemyController.hpGauge.value -= damage; //残りHpに応じてUIが更新
     }
 
     public void SelfHealing(float deltatime)
     { 
-        float heal = EnemyModel.SelfHealing(deltatime);
-        EnemyController.hpGauge.value += heal;
+        float heal = EnemyModel.SelfHealing(deltatime); //時間経過で自動でHpが回復
+        EnemyController.hpGauge.value += heal; //回復したHpに応じてUIが更新
     }
 }

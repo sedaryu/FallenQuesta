@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerModel
 {
-    public string Name { get; private set; }
+    public string Name { get; private set; } //Playerの名前
     public float Hp { get; private set; } = 1; //体力
     public float Defense { get; private set; } //被ダメージカット率
     public float Speed { get; private set; } //移動速度
@@ -38,7 +38,7 @@ public class PlayerModel
         Recover = player.Recover;
     }
 
-    public bool DecreaseGuts(float guts)
+    public bool DecreaseGuts(float guts) //渡されたぶんのガッツがあればガッツを消費しtrueを返す、無ければ消費せずfalseを返す
     {
         if (Guts - guts < 0)
         {

@@ -6,8 +6,8 @@ public class PlayerProjectileEvent
 {
     private PlayerPresenter PlayerPresender { get; set; }
     private List<EnemyPresenter> EnemyPresender { get; set; }
-    private Dictionary<string, Projectile> Projectile { get; set; }
-    private List<Transform> EnemyTransforms { get; set; }
+    private Dictionary<string, Projectile> Projectile { get; set; } //Projectile全ての情報をまとめたDictionary
+    private List<Transform> EnemyTransforms { get; set; } //当たり判定に使用
 
     public PlayerProjectileEvent(PlayerPresenter playerPresender, List<EnemyPresenter> enemyPresender, 
                                  Dictionary<string, Projectile> projectile, List<Transform> enemyTransforms)
@@ -18,11 +18,12 @@ public class PlayerProjectileEvent
         EnemyTransforms = enemyTransforms;
     }
 
+    //keyを用いてProjectileDictionaryから指定したProjectileのステータスを取得し、生成されたProjectilePrefabに渡す
     public void ThrowProjectile(PlayerController playerController, string key)
     {
         float cost = Projectile[key].Cost;
 
-        if (PlayerPresender.DecreaseGuts(cost)) //プロジェクティルのコストぶんガッツがあるか確認
+        if (PlayerPresender.DecreaseGuts(cost)) //Projectileのコストぶんガッツがあるか確認
         {
             ProjectileController projectile = playerController.InstanciateProjectile().GetComponent<ProjectileController>();
             projectile.Constructor(EnemyTransforms, Projectile[key]);

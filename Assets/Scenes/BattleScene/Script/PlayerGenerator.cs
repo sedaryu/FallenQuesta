@@ -9,7 +9,7 @@ public class PlayerGenerator : MonoBehaviour
     public GameObject Generate(Player player)
     { 
         GameObject playerObject = Instantiate(playerPrefab);
-        playerObject.GetComponent<PlayerController>().Constructor(player); //スピードやスプライトなどのデータを設定
+        playerObject.GetComponent<PlayerController>().Constructor(player); //各ステータスをPlayerを参照し設定
         return playerObject;
     }
 }
