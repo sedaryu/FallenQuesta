@@ -22,7 +22,6 @@ public class EnemyController : MonoBehaviour
     private List<float> projectiles_attack = new List<float>();
 
     public event Action<EnemyController, string> ThrowProjectile; //Projectileを放つ際に発生するイベント
-    public event Action EnemyDead; //撃破された際に発生するイベント
 
     private SpriteRenderer spriteRenderer; //Prefabにアタッチされているスプライトレンダラーを格納
     private Sprite enemyImage; //立ち絵画像
@@ -123,15 +122,6 @@ public class EnemyController : MonoBehaviour
         else
         {
             move = Random.Range(-Speed, Speed);
-        }
-    }
-
-    public void DeadEnemy() //Hpが以下になった場合、非アクティブ状態にすることでエネミーをフィールドから除外する
-    {
-        if (this.gameObject.activeInHierarchy)
-        {
-            EnemyDead.Invoke();
-            this.gameObject.SetActive(false);
         }
     }
 

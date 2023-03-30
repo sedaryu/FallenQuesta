@@ -90,6 +90,8 @@ public class GameDirecter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DeadJudge(); //死亡判定
+
         EnemyPresenter.ForEach(x => x.SelfHealing(Time.deltaTime)); //エネミーのHp自己回復処理
         PlayerPresenter.RecoverGuts(); //プレイヤーのガッツ自動回復処理
 
@@ -109,7 +111,6 @@ public class GameDirecter : MonoBehaviour
         enemyGenerator = GetComponent<EnemyGenerator>();
         Enemies.ForEach(x => EnemyModel.Add(new EnemyModel(x)));
         Enemies.ForEach(x => EnemyObject.Add(enemyGenerator.Generate(x)));
-        EnemyObject.ForEach(x => x.GetComponent<EnemyController>().EnemyDead += KillEnemy);
         for (int i = 0; i < Enemies.Count; i++)
         {
             EnemyPresenter.Add(new EnemyPresenter(EnemyModel[i], EnemyObject[i].GetComponent<EnemyController>()));
@@ -160,6 +161,30 @@ public class GameDirecter : MonoBehaviour
         }
 
         return projectiles;
+    }
+
+    private void DeadJudge() //死亡判定
+    {
+        if (PlayerModel.Hp <= 0) //Hpが0以下の場合
+        { 
+            
+        }
+
+        if (EnemyModel.Count(x => x.Hp <= 0) > 0) //Hpが0以下のエネミーが一つでもある場合
+        {
+            for (int i = 0; i < EnemyModel.Count(x => x.Hp <= 0); i++)
+            {
+                int index = EnemyModel.FindIndex(x => x.Hp <= 0); //撃破したエネミーのインデックスを取得
+                //エネミーに関連するオブジェクト・スクリプトを格納先から除外する
+                EnemyPresenter.RemoveAt(index);
+                EnemyModel.RemoveAt(index);
+                EnemyTransforms.RemoveAt(index);
+                Destroy(EnemyObject[index]);
+                EnemyObject.RemoveAt(index);
+                
+                KillEnemy(); //撃破カウントを更新
+            }
+        }
     }
 
     private void GameOver() //ゲームオーバー演出
