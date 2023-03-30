@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -22,6 +23,7 @@ using UnityEngine.UI;
 public class GameDirecter : MonoBehaviour
 {
     private string SelectedPlayer; //MenuSceneで選択されたプレイヤー名を代入
+    private int SelectedEnemyCount; //MenuSceneで選択されたエネミーの数を代入
     private List<string> SelectedEnemies = new List<string>(); //MenuSceneで選択されたエネミー名を代入
 
 
@@ -51,16 +53,17 @@ public class GameDirecter : MonoBehaviour
 
     //ゲームオーバー
     private int killCount = 0; //撃破した敵の数を記録
-    private bool gameOver = false; //ゲームクリア・ゲームオーバーの際にtrueとなる
+    //private bool gameOver = false; //ゲームクリア・ゲームオーバーの際にtrueとなる
 
     private void Awake()
     {
         //JsonFileを参照し、各Projectileのステータスを記録
         Projectiles = JsonConvertToProjectiles();
 
-        //MenuSceneで選ばれたキャラクター名を代入
+        //MenuSceneで選ばれたキャラクター名とエネミー数を代入
         SelectedPlayer = PlayerPrefs.GetString("Player");
-        for (int i = 0; i < PlayerPrefs.GetInt("EnemyCount"); i++)
+        SelectedEnemyCount = PlayerPrefs.GetInt("EnemyCount");
+        for (int i = 0; i < SelectedEnemyCount; i++)
         {
             SelectedEnemies.Add(PlayerPrefs.GetString($"Enemies{i}"));
         }
@@ -95,7 +98,7 @@ public class GameDirecter : MonoBehaviour
         EnemyPresenter.ForEach(x => x.SelfHealing(Time.deltaTime)); //エネミーのHp自己回復処理
         PlayerPresenter.RecoverGuts(); //プレイヤーのガッツ自動回復処理
 
-        GameOver(); //ゲームオーバーかどうかを判定
+        Debug.Log(PlayerModel.Hp);
     }
 
     private void GeneratePlayer()
@@ -165,11 +168,15 @@ public class GameDirecter : MonoBehaviour
 
     private void DeadJudge() //死亡判定
     {
+        //プレイヤーの死亡判定
         if (PlayerModel.Hp <= 0) //Hpが0以下の場合
-        { 
-            
+        {
+            PlayerObject.SetActive(false); //非アクティブ化
+            PlayerObject.GetComponent<Transform>().position = new Vector3(500, 0, 0);
+            GameOver(); //ゲームオーバー演出を実行
         }
 
+        //エネミーの死亡判定
         if (EnemyModel.Count(x => x.Hp <= 0) > 0) //Hpが0以下のエネミーが一つでもある場合
         {
             for (int i = 0; i < EnemyModel.Count(x => x.Hp <= 0); i++)
@@ -182,31 +189,31 @@ public class GameDirecter : MonoBehaviour
                 Destroy(EnemyObject[index]);
                 EnemyObject.RemoveAt(index);
                 
-                KillEnemy(); //撃破カウントを更新
+                killCount++; //撃破カウントを更新
+            }
+
+            if (killCount == SelectedEnemyCount) //エネミー撃破数がエネミー数に達した場合
+            {
+                GameClear(); //ステージクリアー演出を実行
             }
         }
     }
 
     private void GameOver() //ゲームオーバー演出
     {
-        if (PlayerObject.activeInHierarchy == false && !gameOver) //Playerのオブジェクトが非アクティブになった場合
-        {
-            gameOver = true;
-            GameObject.Find("background_beach").GetComponent<SpriteRenderer>().color = Color.red;
-            StartCoroutine(BackToMenu());
-        }
-
-        if (killCount == Enemies.Count && !gameOver)
-        {
-            gameOver = true;
-            GameObject.Find("Canvas").transform.Find("FieldConquested").gameObject.SetActive(true);
-            StartCoroutine(BackToMenu());
-        }
+        GameObject.Find("background_beach").GetComponent<SpriteRenderer>().color = Color.red;
+        StartCoroutine(BackToMenu());
     }
 
     public void KillEnemy()
     { 
         killCount++;
+    }
+
+    private void GameClear()
+    {
+        GameObject.Find("Canvas").transform.Find("FieldConquested").gameObject.SetActive(true);
+        StartCoroutine(BackToMenu());
     }
 
     IEnumerator BackToMenu()

@@ -29,7 +29,6 @@ public class HpGaugeController : MonoBehaviour
     }
 
     private Slider[] hpGauge;
-    public event Action DeadEnd; //Hp‚ª0ˆÈ‰º‚É‚È‚Á‚½Û(GameOver)‚ÌƒCƒxƒ“ƒg
 
     // Start is called before the first frame update
     void Start()
@@ -42,10 +41,5 @@ public class HpGaugeController : MonoBehaviour
     {
         hpGauge[0].value = Value;
         hpGauge[1].value = Value;
-
-        if (Value <= 0) //Hp‚ª0ˆÈ‰º‚©”»’è
-        {
-            DeadEnd.Invoke();
-        }
     }
 }

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public float Defense { get; private set; }
     public float Speed { get; private set; }
     public float Recover { get; private set; }
     public List<string> Projectiles { get; private set; }
@@ -25,7 +24,6 @@ public class PlayerController : MonoBehaviour
 
     public void Constructor(Player player)
     {
-        Defense = player.Defense;
         Speed = player.Speed;
         Recover = player.Recover;
         Projectiles = player.Projectiles;
@@ -37,7 +35,6 @@ public class PlayerController : MonoBehaviour
     {
         this.transform.position = new Vector3(0, -3.5f, 0); //èâä˙à íuÇê›íË
         HpGauge = GameObject.Find("HpGauge").GetComponent<HpGaugeController>();
-        HpGauge.DeadEnd += PlayerDead;
         GutsGauge = GameObject.Find("GutsGauge").GetComponent<GutsGaugeController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = playerImage;
@@ -97,9 +94,9 @@ public class PlayerController : MonoBehaviour
         return Instantiate(ProjectilePrefab, this.transform.position, Quaternion.identity);
     }
 
-    public void DecreaseHp()
+    public void DecreaseHp(float damage)
     {
-        HpGauge.Value -= Defense;
+        HpGauge.Value -= damage;
     }
 
     public void DecreaseGuts(float guts)
@@ -112,10 +109,5 @@ public class PlayerController : MonoBehaviour
         float recover = Recover * Time.deltaTime;
         GutsGauge.Value += recover;
         return recover;
-    }
-
-    public void PlayerDead()
-    { 
-        this.gameObject.SetActive(false);
     }
 }

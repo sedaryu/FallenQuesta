@@ -6,7 +6,7 @@ public class PlayerModel
 {
     public string Name { get; private set; } //Playerの名前
     public float Hp { get; private set; } = 1; //体力
-    public float Defense { get; private set; } //被ダメージカット率
+    public float Defense { get; private set; } //一被弾あたりの被ダメージ
     public float Speed { get; private set; } //移動速度
     public float Recover { get; private set; } //一秒間に回復するガッツ量
 
@@ -34,6 +34,7 @@ public class PlayerModel
     public PlayerModel(Player player)
     { 
         Name = player.Name;
+        Defense = player.Defense;
         Speed = player.Speed;
         Recover = player.Recover;
     }
@@ -54,8 +55,9 @@ public class PlayerModel
         Guts += recover;
     }
 
-    public void DecreaseHp()
+    public float DecreaseHp()
     {
         Hp -= Defense;
+        return Defense;
     }
 }

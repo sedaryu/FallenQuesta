@@ -34,7 +34,7 @@ public class PlayerPresenter
 
     public void DecreaseHp()
     {
-        PlayerModel.DecreaseHp(); //Hpが減少
-        PlayerController.DecreaseHp(); //残りHpに応じてUIが更新
+        float damage = PlayerModel.DecreaseHp(); //Hpが減少
+        PlayerController.DecreaseHp(damage); //残りHpに応じてUIが更新
     }
 }
