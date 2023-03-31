@@ -26,28 +26,29 @@ public class MenuDirecter : MonoBehaviour
     }
 
     //BattleSceneに送るPlayerとEnemyのキャラ名をPlayerPrefsにセットする
+    //BattleSceneへシーン遷移を行う
     public void GameStartSetting()
     {
-        PlayerPrefs.SetString("Player", selectedPlayer.Characters[selectedPlayer.selectedChara]); //プレイヤーキャラ名を記録
+        PlayerPrefs.SetString("Player", selectedPlayer.SelectedCharaName()); //プレイヤーキャラ名を記録
 
         List<string> enemyCharas = new List<string>();
         selectedEnemies.ForEach(x => enemyCharas.Add(x.SelectedCharaName()));
-        enemyCharas.RemoveAll(x => x == "None");
+        enemyCharas.RemoveAll(x => x == "None"); //None(選択なし)を除外する
 
-        if (enemyCharas.Count < 1) //最低でも敵キャラを一体は選択しなければならない
+        if (enemyCharas.Count < 1) //最低でもエネミーキャラを一体は選択しなければならない
         {
             return;
         }
 
-        PlayerPrefs.SetInt("EnemyCount", enemyCharas.Count); //敵キャラの数を記録
+        PlayerPrefs.SetInt("EnemyCount", enemyCharas.Count); //エネミーキャラの数を記録
 
         for (int i = 0; i < enemyCharas.Count; i++)
         {
-            PlayerPrefs.SetString($"Enemies{i}", enemyCharas[i]);
+            PlayerPrefs.SetString($"Enemies{i}", enemyCharas[i]); //エネミーキャラ名を記録
         }
 
         PlayerPrefs.Save();
 
-        SceneManager.LoadScene("BattleScene");
+        SceneManager.LoadScene("BattleScene"); //シーン遷移
     }
 }

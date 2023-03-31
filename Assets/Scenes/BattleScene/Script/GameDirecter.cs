@@ -48,6 +48,7 @@ public class GameDirecter : MonoBehaviour
     public Dictionary<string, Projectile> Projectiles { get; private set; } = new Dictionary<string, Projectile>(); //フィールド上で使うProjectileを格納
     public Dictionary<KeyCode, Projectile> PlayerProjectile { get; private set; } = new Dictionary<KeyCode, Projectile>(); //キーごとに割り振る
 
+    //攻撃イベント
     private PlayerProjectileEvent playerProjectileEvent; //プレイヤーがProjectileを投げる際のイベント
     private EnemyProjectileEvent enemyProjectileEvent; //エネミーがProjectileを投げる際のイベント
 

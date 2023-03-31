@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileModel
+public class ProjectileCalculator
 {
     public string Name { get; private set; }
     public float Time { get; private set; }
@@ -14,7 +14,7 @@ public class ProjectileModel
     public float Rotation { get; private set; }
     public float Scale { get; private set; }
 
-    public ProjectileModel(Projectile projectile)
+    public ProjectileCalculator(Projectile projectile)
     {
         Name = projectile.Name;
         Player = projectile.Player;

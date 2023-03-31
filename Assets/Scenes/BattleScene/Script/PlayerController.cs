@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     private HpGaugeController HpGauge; //Hpを表示するUI
     private GutsGaugeController GutsGauge; //Gutsを表示するUI
-    private SpriteRenderer spriteRenderer; //Prefabにアタッチされているスプライトレンダラーを格納
+    private SpriteRenderer spriteRenderer; //PrefabにアタッチされているSpriteRendererを格納
     private Sprite playerImage; //立ち絵画像
 
     [SerializeField] private GameObject ProjectilePrefab;

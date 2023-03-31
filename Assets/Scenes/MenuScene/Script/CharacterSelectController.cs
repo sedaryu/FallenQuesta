@@ -9,9 +9,9 @@ using System;
 public class CharacterSelectController : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private bool Player; //味方キャラか敵キャラか
-    [SerializeField] public List<string> Characters = new List<string>(); //キャラ名を格納
+    [SerializeField] private List<string> Characters = new List<string>(); //キャラ名を格納
 
-    [NonSerialized] public int selectedChara = 0; //選択されているキャラのインデックス番号
+    [NonSerialized] private int selectedChara = 0; //選択されているキャラのインデックス番号
     private Image characterImage; //選択されているキャラの画像を表示
 
     private Text characterName; //選択されているキャラの名前を表示

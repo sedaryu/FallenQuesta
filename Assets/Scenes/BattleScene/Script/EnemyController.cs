@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class EnemyController : MonoBehaviour
 {
     public float MaxHp { get; private set; } //Hpの最大値
-    public float Speed { get; private set; } //移動速度
+    public float Speed { get; private set; } //最大移動速度
     public float Span { get; private set; } //移動速度、移動方向の変化スパン
     public float Power { get; private set; } //一秒間に放たれるProjectileの数
     public List<string> Projectiles { get; private set; } //使用するProjectileの種類
