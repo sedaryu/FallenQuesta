@@ -154,7 +154,7 @@ public class GameDirecter : MonoBehaviour
         Dictionary<string, Projectile> projectiles = new Dictionary<string, Projectile>();
 
         StreamReader reader;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             reader = new StreamReader(Application.dataPath + "/JsonData/JsonProjectile" + $"/{i}.json");
             string data = reader.ReadToEnd();
