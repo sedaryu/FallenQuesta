@@ -1,0 +1,7 @@
+{
+	"Name": "Assassin",
+	"Defense": 0.5,
+	"Speed": 17.5,
+	"Recover": 0.75,
+	"Projectiles": [ "Knife" ]
+}

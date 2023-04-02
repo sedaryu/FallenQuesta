@@ -1,0 +1,9 @@
+{
+	"Name":"Starman",
+	"Hp":7.5,
+	"Heal":3.5,
+	"Speed":15.0,
+	"Span":0.75,
+	"Power":2.0,
+	"Projectiles": [ "Blast" ]
+}

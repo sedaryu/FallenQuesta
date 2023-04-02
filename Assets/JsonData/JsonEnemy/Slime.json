@@ -5,5 +5,5 @@
 	"Speed":2.5,
 	"Span":3.0,
 	"Power":2.0,
-	"Projectiles": [ "Blast","Blast" ]
+	"Projectiles": [ "Blast" ]
 }

@@ -1,0 +1,7 @@
+{
+	"Name": "Samurai",
+	"Defense": 0.35,
+	"Speed": 15.0,
+	"Recover": 0.55,
+	"Projectiles": [ "Knife" ]
+}

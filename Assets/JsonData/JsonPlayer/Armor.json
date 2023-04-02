@@ -1,0 +1,7 @@
+{
+	"Name": "Armor",
+	"Defense": 0.1,
+	"Speed": 12.5,
+	"Recover": 0.25,
+	"Projectiles": [ "Knife" ]
+}
