@@ -18,11 +18,6 @@ public class EnemyPresenter
     {
         EnemyModel.DecreaseHp(damage); //受けたダメージぶんHpが減少
 
-        //if (EnemyModel.Hp <= 0) //Hpが0以下になった場合
-        //{
-        //    EnemyController.DeadEnemy(); //死亡(非アクティブ化)
-        //}
-
         EnemyController.hpGauge.value -= damage; //残りHpに応じてUIが更新
     }
 
