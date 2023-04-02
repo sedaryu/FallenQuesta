@@ -1,7 +1,7 @@
 {
 	"Name":"DemonPot",
 	"Hp":25.0,
-	"Heal":1.5,
+	"Heal":0.5,
 	"Speed":1.0,
 	"Span":3.0,
 	"Power":1.0,
