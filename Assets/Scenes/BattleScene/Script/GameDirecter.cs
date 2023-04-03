@@ -9,16 +9,17 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-//BattleSceneに登場するキャラクターオブジェクトは、プレイヤーキャラならばPlayerPrefab、エネミーキャラならばEnemyPrefabをインスタンスすることで生成する
-//キャラごとにステータスの違いを持たせるため、インスタンスと同時にControllerスクリプトをアタッチする
-//Controllerスクリプト内部でキャラごとのステータス（SpeedやMaterialなど）を変更する
+//BattleSceneに登場するキャラクターオブジェクトは、プレイヤーキャラならばPlayerPrefab、
+//エネミーキャラならばEnemyPrefabをインスタンスすることで生成する
+//キャラごとにステータスの違いを持たせるため、インスタンスと同時にControllerスクリプトを設定する
+//Controllerスクリプト内部でキャラごとのステータス（SpeedやSpriteなど）を変更する
 //各キャラごとの初期ステータスはそれぞれJSONファイルに記録されている
 //シーン起動時、指定されたJSONファイルを読み込むことで、各キャラのステータスをPlayerクラス、Enemyクラスに代入する
 //Playerクラス・Enemyクラスから、それぞれのModelとControllerにステータスが代入される
 //Modelは主にキャラクターの内部データを処理するクラス
 //Controllerは主にキャラクターの入出力を処理するクラス
-//攻撃を受ける、ガッツが回復するなど、何らかの値の変更を行いたい場合は、Presenderクラスで処理する
-//Presenderクラスを利用することによって、ModelとController間の依存性を下げる
+//攻撃を受ける、ガッツが回復するなど、何らかの値の変更を行いたい場合は、Presenterクラスで処理する
+//Presenterクラスを利用することによって、ModelとController間の依存性を下げる
 
 public class GameDirecter : MonoBehaviour
 {
@@ -54,7 +55,6 @@ public class GameDirecter : MonoBehaviour
 
     //ゲームオーバー
     private int killCount = 0; //撃破した敵の数を記録
-    //private bool gameOver = false; //ゲームクリア・ゲームオーバーの際にtrueとなる
 
     private void Awake()
     {
@@ -71,7 +71,7 @@ public class GameDirecter : MonoBehaviour
         
 
         //JsonFileを参照し、各Player・Enemyのステータスを記録する
-        Player = JsonConvertPlayer(SelectedPlayer);
+        Player = JsonConvertToPlayer(SelectedPlayer);
         Enemies = JsonConvertToEnemies(SelectedEnemies);
 
         //各Player・Enemyのオブジェクト、コンポーネント、スクリプトを生成
@@ -98,8 +98,6 @@ public class GameDirecter : MonoBehaviour
 
         EnemyPresenter.ForEach(x => x.SelfHealing(Time.deltaTime)); //エネミーのHp自己回復処理
         PlayerPresenter.RecoverGuts(); //プレイヤーのガッツ自動回復処理
-
-        Debug.Log(PlayerModel.Hp);
     }
 
     private void GeneratePlayer()
@@ -122,7 +120,7 @@ public class GameDirecter : MonoBehaviour
         }
     }
 
-    private Player JsonConvertPlayer(string name)
+    private Player JsonConvertToPlayer(string name)
     {
         StreamReader reader;
         reader = new StreamReader(Application.dataPath + "/JsonData/JsonPlayer" + $"/{name}.json");
