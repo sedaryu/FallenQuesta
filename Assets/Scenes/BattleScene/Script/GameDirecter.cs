@@ -11,7 +11,7 @@ using UnityEngine.UI;
 //プレイヤー・エネミーキャラの管理方法についての解説
 
 //BattleSceneに登場するキャラクターオブジェクトは、プレイヤーキャラならばPlayerPrefab、
-//エネミーキャラならばEnemyPrefabをインスタンスすることで生成する
+//エネミーキャラならばEnemyPrefabをインスタンスすることで生成される
 //各キャラごとの初期ステータスはそれぞれJSONファイルに記録されている
 //シーン起動時、指定されたJSONファイルを読み込むことで、各キャラのステータスをPlayerクラス、Enemyクラスに代入する
 //Playerクラス・Enemyクラスから、それぞれのModelとControllerにステータスが代入される
