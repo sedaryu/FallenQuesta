@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerPresenter
 {
-    private PlayerModel PlayerModel { get; set; }
-    private PlayerController PlayerController { get; set; }
+    private PlayerModel PlayerModel { get; set; } //プレイヤーキャラのステータスを管理するクラス
+    private PlayerController PlayerController { get; set; } //プレイヤーキャラのオブジェクトを管理するクラス
 
     public PlayerPresenter(PlayerModel playerModel, PlayerController playerController)
     {
@@ -13,11 +13,13 @@ public class PlayerPresenter
         PlayerController = playerController;
     }
 
+    //残りガッツ量に対応し、Projectileを投げれるかどうか判別
+    //投げれる場合、Gutsを消費しtrueを返す(ガッツが足りず投げられない場合はfalseを返す)
     public bool DecreaseGuts(float guts)
     {
         if (PlayerModel.DecreaseGuts(guts)) //渡されたぶんの残りガッツがあればtrue
         {
-            PlayerController.DecreaseGuts(guts); //残りガッツに応じてUIを更新
+            PlayerController.UpdateGutsUI(PlayerModel.Guts); //GutsゲージのUIも更新
             return true;
         }
         else
@@ -27,14 +29,14 @@ public class PlayerPresenter
     }
 
     public void RecoverGuts()
-    { 
-        float recover = PlayerController.RecoverGuts(); //時間経過で自動でガッツが回復
-        PlayerModel.RecoverGuts(recover); //回復したガッツに応じてUIが更新
+    {
+        PlayerModel.RecoverGuts(); //時間経過で自動でガッツが回復
+        PlayerController.UpdateGutsUI(PlayerModel.Guts); //GutsゲージのUIも更新
     }
 
     public void DecreaseHp()
     {
-        float damage = PlayerModel.DecreaseHp(); //Hpが減少
-        PlayerController.DecreaseHp(damage); //残りHpに応じてUIが更新
+        PlayerModel.DecreaseHp(); //Hpが減少
+        PlayerController.UpdateHpUI(PlayerModel.Hp); //HpゲージのUIも更新
     }
 }

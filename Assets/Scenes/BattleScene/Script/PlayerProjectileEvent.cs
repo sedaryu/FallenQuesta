@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class PlayerProjectileEvent
 {
-    private PlayerPresenter PlayerPresender { get; set; }
-    private List<EnemyPresenter> EnemyPresender { get; set; }
-    private Dictionary<string, Projectile> Projectile { get; set; } //Projectile全ての情報をまとめたDictionary
+    private PlayerPresenter PlayerPresenter { get; set; }
+    private List<EnemyPresenter> EnemyPresenter { get; set; }
+    private Dictionary<string, Projectile> Projectile { get; set; } //Projectileの情報をまとめたDictionary
     private List<Transform> EnemyTransforms { get; set; } //当たり判定に使用
 
     public PlayerProjectileEvent(PlayerPresenter playerPresender, List<EnemyPresenter> enemyPresender, 
                                  Dictionary<string, Projectile> projectile, List<Transform> enemyTransforms)
     {
-        PlayerPresender = playerPresender;
-        EnemyPresender = enemyPresender;
+        PlayerPresenter = playerPresender;
+        EnemyPresenter = enemyPresender;
         Projectile = projectile;
         EnemyTransforms = enemyTransforms;
     }
@@ -23,7 +23,7 @@ public class PlayerProjectileEvent
     {
         float cost = Projectile[key].Cost;
 
-        if (PlayerPresender.DecreaseGuts(cost)) //Projectileのコストぶんガッツがあるか確認
+        if (PlayerPresenter.DecreaseGuts(cost)) //Projectileのコストぶんガッツがあるか確認
         {
             ProjectileController projectile = playerController.InstanciateProjectile().GetComponent<ProjectileController>();
             projectile.Constructor(EnemyTransforms, Projectile[key]);
@@ -33,6 +33,6 @@ public class PlayerProjectileEvent
 
     public void DecreaseEnemyDamage(List<int> hits, float damage) //当たり判定の結果、敵にダメージを与える場合
     {
-        hits.ForEach(x => EnemyPresender[x].DecreaseHp(damage));
+        hits.ForEach(x => EnemyPresenter[x].DecreaseHp(damage));
     }
 }

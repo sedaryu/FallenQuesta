@@ -8,18 +8,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//プレイヤー・エネミーキャラの管理方法についての解説
 
 //BattleSceneに登場するキャラクターオブジェクトは、プレイヤーキャラならばPlayerPrefab、
 //エネミーキャラならばEnemyPrefabをインスタンスすることで生成する
-//キャラごとにステータスの違いを持たせるため、インスタンスと同時にControllerスクリプトを設定する
-//Controllerスクリプト内部でキャラごとのステータス（SpeedやSpriteなど）を変更する
 //各キャラごとの初期ステータスはそれぞれJSONファイルに記録されている
 //シーン起動時、指定されたJSONファイルを読み込むことで、各キャラのステータスをPlayerクラス、Enemyクラスに代入する
 //Playerクラス・Enemyクラスから、それぞれのModelとControllerにステータスが代入される
 //Modelは主にキャラクターの内部データを処理するクラス
 //Controllerは主にキャラクターの入出力を処理するクラス
-//攻撃を受ける、ガッツが回復するなど、何らかの値の変更を行いたい場合は、Presenterクラスで処理する
-//Presenterクラスを利用することによって、ModelとController間の依存性を下げる
+//攻撃を受ける、ガッツが回復するなど、何らかの値の変更を行いたい場合は、Presenterクラスで処理を行う
+//Presenterクラスを利用することによって、ModelとController間の依存性を下げる目的がある
 
 public class GameDirecter : MonoBehaviour
 {
@@ -47,7 +46,6 @@ public class GameDirecter : MonoBehaviour
 
     //プロジェクティル
     public Dictionary<string, Projectile> Projectiles { get; private set; } = new Dictionary<string, Projectile>(); //フィールド上で使うProjectileを格納
-    public Dictionary<KeyCode, Projectile> PlayerProjectile { get; private set; } = new Dictionary<KeyCode, Projectile>(); //キーごとに割り振る
 
     //攻撃イベント
     private PlayerProjectileEvent playerProjectileEvent; //プレイヤーがProjectileを投げる際のイベント
@@ -74,11 +72,11 @@ public class GameDirecter : MonoBehaviour
         Player = JsonConvertToPlayer(SelectedPlayer);
         Enemies = JsonConvertToEnemies(SelectedEnemies);
 
-        //各Player・Enemyのオブジェクト、コンポーネント、スクリプトを生成
+        //各Player・Enemyのオブジェクト、スクリプトを生成
         GeneratePlayer();
         GenerateEnemy();
 
-        //各Player・Enemyのイベント設定
+        //各Player・Enemyのイベントを設定
         playerProjectileEvent = new PlayerProjectileEvent(PlayerPresenter, EnemyPresenter, Projectiles, EnemyTransforms);
         PlayerObject.GetComponent<PlayerController>().UpArrowKey += playerProjectileEvent.ThrowProjectile;
         enemyProjectileEvent = new EnemyProjectileEvent(PlayerPresenter, PlayerObject.GetComponent<Transform>(), Projectiles);
@@ -126,8 +124,8 @@ public class GameDirecter : MonoBehaviour
         reader = new StreamReader(Application.dataPath + "/JsonData/JsonPlayer" + $"/{name}.json");
         string data = reader.ReadToEnd();
         reader.Close();
-        JsonPlayer player = JsonUtility.FromJson<JsonPlayer>(data);
-        return new Player(player.Name, player.Defense, player.Speed, player.Recover, player.Projectiles);
+        JsonPlayer player = JsonUtility.FromJson<JsonPlayer>(data); //JsonPlayerクラスに各ステータスの値を代入
+        return new Player(player.Name, player.Defense, player.Speed, player.Recover, player.Projectiles); //Playerクラスを生成すると同時にステータスを受け取る
     }
 
     private List<Enemy> JsonConvertToEnemies(List<string> name)
@@ -140,7 +138,8 @@ public class GameDirecter : MonoBehaviour
             reader = new StreamReader(Application.dataPath + "/JsonData/JsonEnemy" + $"/{name[i]}.json");
             string data = reader.ReadToEnd();
             reader.Close();
-            JsonEnemy enemy = JsonUtility.FromJson<JsonEnemy>(data);
+            JsonEnemy enemy = JsonUtility.FromJson<JsonEnemy>(data); //JsonEnemyクラスに各ステータスの値を代入
+            //Enemyクラスを生成すると同時にステータスを受け取る
             enemies.Add(new Enemy(enemy.Name, enemy.Hp, enemy.Heal, enemy.Speed, enemy.Span, enemy.Power, enemy.Projectiles));
         }
 
@@ -152,7 +151,7 @@ public class GameDirecter : MonoBehaviour
         Dictionary<string, Projectile> projectiles = new Dictionary<string, Projectile>();
 
         StreamReader reader;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++) //ファイル内全ての要素を取得している => マジックナンバーのため改良すべき
         {
             reader = new StreamReader(Application.dataPath + "/JsonData/JsonProjectile" + $"/{i}.json");
             string data = reader.ReadToEnd();
@@ -200,8 +199,8 @@ public class GameDirecter : MonoBehaviour
 
     private void GameOver() //ゲームオーバー演出
     {
-        GameObject.Find("background_beach").GetComponent<SpriteRenderer>().color = Color.red;
-        StartCoroutine(BackToMenu());
+        GameObject.Find("background_beach").GetComponent<SpriteRenderer>().color = Color.red; //背景を赤に
+        StartCoroutine(BackToMenu()); //MenuSceneへ戻る
     }
 
     public void KillEnemy()
@@ -211,8 +210,8 @@ public class GameDirecter : MonoBehaviour
 
     private void GameClear()
     {
-        GameObject.Find("Canvas").transform.Find("FieldConquested").gameObject.SetActive(true);
-        StartCoroutine(BackToMenu());
+        GameObject.Find("Canvas").transform.Find("FieldConquested").gameObject.SetActive(true); //テキストを表示
+        StartCoroutine(BackToMenu()); //MenuSceneへ戻る
     }
 
     IEnumerator BackToMenu()
