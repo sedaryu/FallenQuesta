@@ -8,7 +8,8 @@ using UnityEngine;
 //シーン上での飛び道具オブジェクトの動作を管理するクラス
 //飛び道具オブジェクトがProjectilePrefabからインスタンスされると同時に、Constructorメソッドが実行され、
 //引数として受け取ったProjectileクラスに代入されている各ステータスを、ProjectileCalculatorクラスのプロパティに代入する
-//ProjectileCalculatorクラス
+//同時にターゲットとなるキャラクターのTransformも取得する
+//
 
 public class ProjectileController : MonoBehaviour
 {
@@ -44,7 +45,7 @@ public class ProjectileController : MonoBehaviour
     {
         //Resourcesから取得した飛び道具の画像をSpriteRendererに代入
         this.GetComponent<SpriteRenderer>().sprite = Resources.Load($"Projectile/{ProjectileCalc.Name}", typeof(Sprite)) as Sprite;
-        SettingTransform(); //プレイヤーかエネミーか、どちらが放ったProjectileかでトランスフォームを調整
+        SettingTransform(); //プレイヤーかエネミーか、どちらが放ったProjectileかでTransformを調整
     }
 
     // Update is called once per frame

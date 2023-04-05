@@ -21,6 +21,9 @@ using UnityEngine.UI;
 //Presenterクラスでは、Model内に記録されたステータスの値に、HpゲージやGutsゲージなどのUIの値を同期させる処理を行う
 //Presenterクラスを利用することによって、ModelとController間の依存性を下げる目的がある
 
+//GameDirecterクラスの解説
+
+
 public class GameDirecter : MonoBehaviour
 {
     private string SelectedPlayer; //MenuSceneで選択されたプレイヤー名を代入
