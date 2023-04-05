@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+//ProjectileControllerクラスについての解説
+//シーン上での飛び道具オブジェクトの動作を管理するクラス
+//飛び道具オブジェクトがProjectilePrefabからインスタンスされると同時に、Constructorメソッドが実行され、
+//引数として受け取ったProjectileクラスに代入されている各ステータスを、ProjectileCalculatorクラスのプロパティに代入する
+//ProjectileCalculatorクラス
+
 public class ProjectileController : MonoBehaviour
 {
     private bool Player { get; set; } //プレイヤーが放ったProjectileの場合true、エネミーの場合はfalse
@@ -36,7 +42,9 @@ public class ProjectileController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TransformControll(); //プレイヤーかエネミーか、どちらが放ったProjectileかでトランスフォームを調整
+        //Resourcesから取得した飛び道具の画像をSpriteRendererに代入
+        this.GetComponent<SpriteRenderer>().sprite = Resources.Load($"Projectile/{ProjectileCalc.Name}", typeof(Sprite)) as Sprite;
+        SettingTransform(); //プレイヤーかエネミーか、どちらが放ったProjectileかでトランスフォームを調整
     }
 
     // Update is called once per frame
@@ -49,21 +57,19 @@ public class ProjectileController : MonoBehaviour
         JudgeDestroy(); //一定範囲を超えたら破壊する
     }
 
-    private void TransformControll()
+    private void SettingTransform()
     {
         if (Player)
         {
             this.transform.position = new Vector3(this.transform.position.x, -3.5f, 0);
             this.transform.localScale = new Vector3(1, 1, 1);
             this.transform.rotation = new Quaternion(0, 0, 0, 0);
-            this.GetComponent<SpriteRenderer>().sprite = Resources.Load($"Projectile/{ProjectileCalc.Name}", typeof(Sprite)) as Sprite;
         }
         else
         {
             this.transform.position = new Vector3(this.transform.position.x, -1, 0);
             this.transform.localScale = new Vector3(0.2f, 0.2f, 1);
             this.transform.rotation = new Quaternion(180, 0, 0, 0);
-            this.GetComponent<SpriteRenderer>().sprite = Resources.Load($"Projectile/{ProjectileCalc.Name}", typeof(Sprite)) as Sprite;
         }
     }
 

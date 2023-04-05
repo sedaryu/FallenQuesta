@@ -19,7 +19,7 @@ public class PlayerProjectileEvent
     }
 
     //keyを用いてProjectileDictionaryから指定したProjectileのステータスを取得し、
-    //生成されたProjectileオブジェクトにアタッチされたスクリプトにその情報を渡す
+    //生成された飛び道具オブジェクトにアタッチされたスクリプトにその情報を渡す
     //エネミーオブジェクトにヒットした際に発生させるメソッドもイベントへ渡す
     public void ThrowProjectile(PlayerController playerController, string key)
     {
@@ -27,7 +27,6 @@ public class PlayerProjectileEvent
 
         if (PlayerPresenter.DecreaseGuts(cost)) //Projectileのコストぶんガッツがあるか確認
         {
-            //
             ProjectileController projectile = playerController.InstanciateProjectile().GetComponent<ProjectileController>();
             projectile.Constructor(EnemyTransforms, Projectile[key]);
             projectile.ProjectileHitEnemy += DecreaseEnemyDamage;

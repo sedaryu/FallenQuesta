@@ -11,6 +11,10 @@ using UnityEngine;
 //Gutsは時間経過で自動回復する
 //Projectileごとに消費するGutsは異なる
 
+//EnemyModelクラスについての解説
+//プロパティに代入されたエネミーの各ステータスを管理するクラス
+//コンストラクターにおいて、引数として受け取ったEnemyクラスに代入されている各ステータスをプロパティに代入する
+
 public class PlayerModel
 {
     public string Name { get; private set; } //Playerの名前

@@ -13,11 +13,17 @@ using UnityEngine.UI;
 //Gutsは時間経過で自動回復する
 //Projectileごとに消費するGutsは異なる
 
+//PlayerControllerクラスについての解説
+//シーン上でのプレイヤーオブジェクトの動作、またUIを管理するクラス
+//プレイヤーオブジェクトがPlayerPrefabからインスタンスされると同時に、Constructorメソッドが実行され、
+//引数として受け取ったPlayerクラスに代入されている各ステータスをプロパティに代入する
+//同時に、オブジェクトにアタッチされているSpriterendererのspriteに、各キャラ固有のsprite(キャラ画像)を代入する
+//Startメソッドで、シーン上に配置されている各UI(HpGauge・GutsGauge)を取得する
+//UIはPlayerModelの各プロパティ(Hp・Guts)の変化に連動し、値を変化させる
+
 public class PlayerController : MonoBehaviour
 {
-    public float Defense { get; private set; } //一被弾あたりの被ダメージ量
     public float Speed { get; private set; } //移動速度
-    public float Recover { get; private set; } //一秒間に回復するガッツ量
     public List<string> Projectiles { get; private set; } //使用するProjectile名
 
     public event Action<PlayerController, string> UpArrowKey; //UpArrowキーを押した際、実行されるイベント
@@ -34,12 +40,12 @@ public class PlayerController : MonoBehaviour
 
     public void Constructor(Player player)
     {
-        Defense = player.Defense;
         Speed = player.Speed;
-        Recover = player.Recover;
         Projectiles = player.Projectiles;
         //Resourcesに保存されたキャラクター画像をロードし、取得する
         playerImage = Resources.Load($"Player/{player.Name}", typeof(Sprite)) as Sprite;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = playerImage; //Resourcesから取得したキャラの画像をSpriteRendererに代入
     }
 
     // Start is called before the first frame update
@@ -48,8 +54,6 @@ public class PlayerController : MonoBehaviour
         this.transform.position = new Vector3(0, -3.5f, 0); //初期位置を設定
         HpGauge = GameObject.Find("HpGauge").GetComponent<HpGaugeController>(); //HpゲージのUIを取得
         GutsGauge = GameObject.Find("GutsGauge").GetComponent<GutsGaugeController>(); //GutsゲージのUIを取得
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = playerImage; //Resourcesから取得したキャラの画像をSpriteRendererに代入
     }
 
     // Update is called once per frame

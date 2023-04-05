@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//EnemyModelクラスについての解説
+//プロパティに代入されたエネミーの各ステータスを管理するクラス
+//コンストラクターにおいて、引数として受け取ったEnemyクラスに代入されている各ステータスをプロパティに代入する
+
 public class EnemyModel
 {
-    public string Name { get; private set; }
-    public float Hp { get; private set; }
-    public float MaxHp { get; private set; }
-    public float Heal { get; private set; }
-    public float Speed { get; private set; }
-    public float Power { get; private set; }
-    public List<string> Projectiles { get; private set; }
+    public string Name { get; private set; } //Enemyの名前
+    public float Hp { get; private set; } //Hp(0以下になると死亡)
+    public float MaxHp { get; private set; } //最大Hp
+    public float Heal { get; private set; } //一秒あたりのHpのオート回復量
+    public float Speed { get; private set; } //移動速度
+    public float Power { get; private set; } //一秒間に放つProjectileの最大数
+    public List<string> Projectiles { get; private set; } //使用するProjectileの名前
 
     public EnemyModel(Enemy enemy)
     {
@@ -23,21 +28,16 @@ public class EnemyModel
         Projectiles = new List<string>();
     }
 
-    public void DecreaseHp(float damage)
+    public void DecreaseHp(float damage) //ダメージぶんHpが減少する
     { 
         Hp -= damage;
     }
 
-    public float SelfHealing(float deltatime)
+    public void SelfHealing() //時間経過でHpが自動回復する
     {
-        float heal = 0;
-
         if (Hp <= MaxHp)
         {
-            heal = Heal * (Hp / MaxHp) * deltatime;
-            Hp += heal;
+            Hp += Heal * (Hp / MaxHp) * Time.deltaTime;
         }
-
-        return heal;
     }
 }

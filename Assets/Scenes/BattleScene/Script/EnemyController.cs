@@ -5,6 +5,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
+//エネミーキャラについての解説
+
+//エネミーキャラはHpが0以下になれば死亡する
+//Hpの最大値は各キャラごとに違う
+//Hpは時間経過で自動回復する
+//Hpの回復速度も各キャラごとに違う
+
+//EnemyControllerクラスについての解説
+//シーン上でのエネミーオブジェクトの動作、またUIを管理するクラス
+//エネミーオブジェクトがEnemyPrefabからインスタンスされると同時に、Constructorメソッドが実行され、
+//引数として受け取ったEnemyクラスに代入されている各ステータスをプロパティに代入する
+//同時に、オブジェクトにアタッチされているSpriterendererのspriteに、各キャラ固有のsprite(キャラ画像)を代入する
+//Startメソッドで、オブジェクトの子オブジェクトとなっているUI(HpGauge)を取得する
+//UIはEnemyModelのプロパティ(Hp)の変化に連動し、値を変化させる
+
 public class EnemyController : MonoBehaviour
 {
     public float MaxHp { get; private set; } //Hpの最大値
@@ -23,7 +38,7 @@ public class EnemyController : MonoBehaviour
 
     public event Action<EnemyController, string> ThrowProjectile; //Projectileを放つ際に発生するイベント
 
-    private SpriteRenderer spriteRenderer; //Prefabにアタッチされているスプライトレンダラーを格納
+    private SpriteRenderer spriteRenderer; //PrefabにアタッチされているSpriteRendererを格納
     private Sprite enemyImage; //立ち絵画像
 
     [System.NonSerialized] public Slider hpGauge; //HpゲージのUIオブジェクトを格納
@@ -36,7 +51,10 @@ public class EnemyController : MonoBehaviour
         Span = enemy.Span;
         Power = enemy.Power;
         Projectiles = enemy.Projectiles;
+        //Resourcesに保存されたキャラクター画像をロードし、取得する
         enemyImage = Resources.Load($"Enemy/{enemy.Name}", typeof(Sprite)) as Sprite;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = enemyImage; //Resourcesから取得したキャラの画像をSpriteRendererに代入
     }
 
     // Start is called before the first frame update
@@ -46,8 +64,6 @@ public class EnemyController : MonoBehaviour
         hpGauge　= this.gameObject.GetComponentInChildren<Slider>(); //HpゲージのUIを取得
         hpGauge.maxValue = MaxHp;
         hpGauge.value = MaxHp;
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = enemyImage; //エネミーキャラの画像を設定
     }
 
     // Update is called once per frame
@@ -123,6 +139,11 @@ public class EnemyController : MonoBehaviour
         {
             move = Random.Range(-Speed, Speed);
         }
+    }
+
+    public void UpdateHpUI(float hp)
+    {
+        hpGauge.value = hp; //残りHpに応じてUIを更新
     }
 
     public GameObject InstanciateProjectile() //Projectileを生成

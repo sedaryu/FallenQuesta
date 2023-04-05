@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class EnemyPresenter
 {
-    private EnemyModel EnemyModel { get; set; }
-    private EnemyController EnemyController { get; set; }
+    private EnemyModel EnemyModel { get; set; } //エネミーキャラのステータスを管理するクラス
+    private EnemyController EnemyController { get; set; } //エネミーキャラのオブジェクトを管理するクラス
 
     public EnemyPresenter(EnemyModel enemyModel, EnemyController enemyController)
-    {
+    {       
         EnemyModel = enemyModel;
         EnemyController = enemyController;
     }
@@ -17,13 +17,12 @@ public class EnemyPresenter
     public void DecreaseHp(float damage)
     {
         EnemyModel.DecreaseHp(damage); //受けたダメージぶんHpが減少
-
-        EnemyController.hpGauge.value -= damage; //残りHpに応じてUIが更新
+        EnemyController.UpdateHpUI(EnemyModel.Hp); //残りHpに応じてUIが更新
     }
 
-    public void SelfHealing(float deltatime)
+    public void SelfHealing()
     { 
-        float heal = EnemyModel.SelfHealing(deltatime); //時間経過で自動でHpが回復
-        EnemyController.hpGauge.value += heal; //回復したHpに応じてUIが更新
+        EnemyModel.SelfHealing(); //時間経過で自動でHpが回復
+        EnemyController.UpdateHpUI(EnemyModel.Hp); //回復したHpに応じてUIが更新
     }
 }

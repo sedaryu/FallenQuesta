@@ -8,16 +8,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-//プレイヤー・エネミーキャラの管理方法についての解説
+//プレイヤー・エネミーキャラを管理するクラスについての解説
 
 //BattleSceneに登場するキャラクターオブジェクトは、プレイヤーキャラならばPlayerPrefab、
 //エネミーキャラならばEnemyPrefabをインスタンスすることで生成される
 //各キャラごとの初期ステータスはそれぞれJSONファイルに記録されている
 //シーン起動時、指定されたJSONファイルを読み込むことで、各キャラのステータスをPlayerクラス、Enemyクラスに代入する
 //Playerクラス・Enemyクラスから、それぞれのModelとControllerにステータスが代入される
-//Modelは主にキャラクターの内部データを処理するクラス
-//Controllerは主にキャラクターの入出力を処理するクラス
-//攻撃を受ける、ガッツが回復するなど、何らかの値の変更を行いたい場合は、Presenterクラスで処理を行う
+//Modelは主にキャラクターのステータスの変化を処理するクラス
+//Controllerは主にキャラクターオブジェクトの動作を処理するクラス
+//Hpが減少する、Gutsが回復するなど、何らかのステータス値の変更を行いたい場合は、Presenterクラスで処理を行う
+//Presenterクラスでは、Model内に記録されたステータスの値に、HpゲージやGutsゲージなどのUIの値を同期させる処理を行う
 //Presenterクラスを利用することによって、ModelとController間の依存性を下げる目的がある
 
 public class GameDirecter : MonoBehaviour
@@ -25,7 +26,6 @@ public class GameDirecter : MonoBehaviour
     private string SelectedPlayer; //MenuSceneで選択されたプレイヤー名を代入
     private int SelectedEnemyCount; //MenuSceneで選択されたエネミーの数を代入
     private List<string> SelectedEnemies = new List<string>(); //MenuSceneで選択されたエネミー名を代入
-
 
     //プレイヤー
     public Player Player { get; private set; } //プレイヤーの初期ステータスを格納
@@ -45,18 +45,18 @@ public class GameDirecter : MonoBehaviour
     private EnemyGenerator enemyGenerator; //EnemyPrefabからエネミーオブジェクトを生成するためのクラス
 
     //プロジェクティル
-    public Dictionary<string, Projectile> Projectiles { get; private set; } = new Dictionary<string, Projectile>(); //フィールド上で使うProjectileを格納
+    public Dictionary<string, Projectile> Projectiles { get; private set; } = new Dictionary<string, Projectile>(); //フィールド上で使用するProjectileを格納
 
     //攻撃イベント
-    private PlayerProjectileEvent playerProjectileEvent; //プレイヤーがProjectileを投げる際のイベント
-    private EnemyProjectileEvent enemyProjectileEvent; //エネミーがProjectileを投げる際のイベント
+    private PlayerProjectileEvent playerProjectileEvent; //プレイヤーが飛び道具を投げる際のイベントを管理
+    private EnemyProjectileEvent enemyProjectileEvent; //エネミーが飛び道具を投げる際のイベントを管理
 
     //ゲームオーバー
     private int killCount = 0; //撃破した敵の数を記録
 
     private void Awake()
     {
-        //JsonFileを参照し、各Projectileのステータスを記録
+        //JsonFileを参照し、各飛び道具のステータスをProjectileクラスに記録
         Projectiles = JsonConvertToProjectiles();
 
         //MenuSceneで選ばれたキャラクター名とエネミー数を代入
@@ -68,15 +68,15 @@ public class GameDirecter : MonoBehaviour
         }
         
 
-        //JsonFileを参照し、各Player・Enemyのステータスを記録する
+        //JsonFileを参照し、各プレイヤー・エネミーのステータスをPlayer・Enemyクラスに記録する
         Player = JsonConvertToPlayer(SelectedPlayer);
         Enemies = JsonConvertToEnemies(SelectedEnemies);
 
-        //各Player・Enemyのオブジェクト、スクリプトを生成
+        //各プレイヤー・エネミーのオブジェクト、スクリプトを生成
         GeneratePlayer();
         GenerateEnemy();
 
-        //各Player・Enemyのイベントを設定
+        //各プレイヤー・エネミーのイベントを設定
         playerProjectileEvent = new PlayerProjectileEvent(PlayerPresenter, EnemyPresenter, Projectiles, EnemyTransforms);
         PlayerObject.GetComponent<PlayerController>().UpArrowKey += playerProjectileEvent.ThrowProjectile;
         enemyProjectileEvent = new EnemyProjectileEvent(PlayerPresenter, PlayerObject.GetComponent<Transform>(), Projectiles);
@@ -92,29 +92,29 @@ public class GameDirecter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DeadJudge(); //死亡判定
+        DeadJudge(); //プレイヤー・エネミーの死亡を判定
 
-        EnemyPresenter.ForEach(x => x.SelfHealing(Time.deltaTime)); //エネミーのHp自己回復処理
+        EnemyPresenter.ForEach(x => x.SelfHealing()); //エネミーのHp自己回復処理
         PlayerPresenter.RecoverGuts(); //プレイヤーのガッツ自動回復処理
     }
 
     private void GeneratePlayer()
     {
         playerGenerator = GetComponent<PlayerGenerator>(); //PlayerGeneratorスクリプトはあらかじめGameDirecterにアタッチされている
-        PlayerModel = new PlayerModel(Player); //Playerの各初期ステータスをPlayerModelへ記録
-        PlayerObject = playerGenerator.Generate(Player); //PlayerPrefabをインスタンスし、PlayerのPlayerControllerへ各初期ステータスを記録
-        PlayerPresenter = new PlayerPresenter(PlayerModel, PlayerObject.GetComponent<PlayerController>());
+        PlayerModel = new PlayerModel(Player); //Playerの各初期ステータスをPlayerModelへ代入
+        PlayerObject = playerGenerator.Generate(Player); //PlayerPrefabをインスタンスし、PlayerControllerへ各ステータスを代入
+        PlayerPresenter = new PlayerPresenter(PlayerModel, PlayerObject.GetComponent<PlayerController>()); //PlayerPresenterを設定
     }
 
     private void GenerateEnemy()
     { 
-        enemyGenerator = GetComponent<EnemyGenerator>();
-        Enemies.ForEach(x => EnemyModel.Add(new EnemyModel(x)));
-        Enemies.ForEach(x => EnemyObject.Add(enemyGenerator.Generate(x)));
+        enemyGenerator = GetComponent<EnemyGenerator>(); //EnemyGeneratorスクリプトはあらかじめGameDirecterにアタッチされている
+        Enemies.ForEach(x => EnemyModel.Add(new EnemyModel(x))); //Enemyの各初期ステータスをEnemyModelへ代入
+        Enemies.ForEach(x => EnemyObject.Add(enemyGenerator.Generate(x))); //EnemyPrefabをインスタンスし、EnemyControllerへ各ステータスを代入
         for (int i = 0; i < Enemies.Count; i++)
         {
-            EnemyPresenter.Add(new EnemyPresenter(EnemyModel[i], EnemyObject[i].GetComponent<EnemyController>()));
-            EnemyTransforms.Add(EnemyObject[i].GetComponent<Transform>());
+            EnemyPresenter.Add(new EnemyPresenter(EnemyModel[i], EnemyObject[i].GetComponent<EnemyController>())); //PlayerPresenterを設定
+            EnemyTransforms.Add(EnemyObject[i].GetComponent<Transform>()); //Transformのリストを設定
         }
     }
 
@@ -167,10 +167,10 @@ public class GameDirecter : MonoBehaviour
     private void DeadJudge() //死亡判定
     {
         //プレイヤーの死亡判定
-        if (PlayerModel.Hp <= 0) //Hpが0以下の場合
+        if (PlayerModel.Hp <= 0) //プレイヤーのHpが0以下の場合
         {
             PlayerObject.SetActive(false); //非アクティブ化
-            PlayerObject.GetComponent<Transform>().position = new Vector3(500, 0, 0);
+            PlayerObject.GetComponent<Transform>().position = new Vector3(500, 0, 0); //エネミーの飛び道具が当たらない場所まで当たり判定(Transform)を移動
             GameOver(); //ゲームオーバー演出を実行
         }
 
@@ -201,11 +201,6 @@ public class GameDirecter : MonoBehaviour
     {
         GameObject.Find("background_beach").GetComponent<SpriteRenderer>().color = Color.red; //背景を赤に
         StartCoroutine(BackToMenu()); //MenuSceneへ戻る
-    }
-
-    public void KillEnemy()
-    { 
-        killCount++;
     }
 
     private void GameClear()
