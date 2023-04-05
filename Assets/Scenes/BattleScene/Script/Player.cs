@@ -2,6 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//プレイヤーキャラについての解説
+
+//プレイヤーキャラのHpが0以下になればゲームオーバー
+//Hpの最大値は各キャラ共通で1
+//Defense(被ダメージ率)の値によって受けるダメージ量が変化する
+//攻撃を一回行うたびGutsを消費する
+//Gutsは時間経過で自動回復する
+//Projectileごとに消費するGutsは異なる
+
 public class Player
 {
     public string Name { get; private set; } //Playerの名前

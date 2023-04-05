@@ -9,7 +9,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 //プレイヤー・エネミーキャラを管理するクラスについての解説
-
 //BattleSceneに登場するキャラクターオブジェクトは、プレイヤーキャラならばPlayerPrefab、
 //エネミーキャラならばEnemyPrefabをインスタンスすることで生成される
 //各キャラごとの初期ステータスはそれぞれJSONファイルに記録されている
@@ -22,7 +21,7 @@ using UnityEngine.UI;
 //Presenterクラスを利用することによって、ModelとController間の依存性を下げる目的がある
 
 //GameDirecterクラスの解説
-
+//
 
 public class GameDirecter : MonoBehaviour
 {
