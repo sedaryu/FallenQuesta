@@ -58,18 +58,7 @@ public class GameDirecter : MonoBehaviour
         Projectiles = SettingProjectiles();
 
         //MenuSceneで選ばれたキャラクター名とエネミー数を代入
-        //SelectedPlayer = PlayerPrefs.GetString("Player");
-        //SelectedPlayer = MenuDirecter.selectedCharacters["Player"];
-        //SelectedEnemyCount = PlayerPrefs.GetInt("EnemyCount");
-        //SelectedEnemyCount = int.Parse(MenuDirecter.selectedCharacters["EnemyCount"]);
-
-        //for (int i = 0; i < SelectedEnemyCount; i++)
-        //{
-        //SelectedEnemies.Add(PlayerPrefs.GetString($"Enemies{i}"));
-        //    SelectedEnemies.Add(MenuDirecter.selectedCharacters[$"Enemies{i}"]);
-        //}
-
-        StreamReader reader = new StreamReader(Application.dataPath + "/JsonData/SelectedCharacter.json");
+        StreamReader reader = new StreamReader(Application.dataPath + "/StreamingAssets/JsonData/SelectedCharacter.json");
         string json = reader.ReadToEnd();
         reader.Close();
         SelectedCharacter selected = JsonUtility.FromJson<SelectedCharacter>(json);
@@ -130,7 +119,7 @@ public class GameDirecter : MonoBehaviour
     private Player JsonConvertToPlayer(string name)
     {
         StreamReader reader;
-        reader = new StreamReader(Application.dataPath + "/JsonData/JsonPlayer" + $"/{name}.json");
+        reader = new StreamReader(Application.dataPath + "/StreamingAssets/JsonData/JsonPlayer" + $"/{name}.json");
         string data = reader.ReadToEnd();
         reader.Close();
         JsonPlayer player = JsonUtility.FromJson<JsonPlayer>(data); //JsonPlayerクラスに各ステータスの値を代入
@@ -144,7 +133,7 @@ public class GameDirecter : MonoBehaviour
 
         for (int i = 0; i < name.Count; i++)
         {
-            reader = new StreamReader(Application.dataPath + "/JsonData/JsonEnemy" + $"/{name[i]}.json");
+            reader = new StreamReader(Application.dataPath + "/StreamingAssets/JsonData/JsonEnemy" + $"/{name[i]}.json");
             string data = reader.ReadToEnd();
             reader.Close();
             JsonEnemy enemy = JsonUtility.FromJson<JsonEnemy>(data); //JsonEnemyクラスに各ステータスの値を代入
