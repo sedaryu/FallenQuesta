@@ -59,15 +59,23 @@ public class GameDirecter : MonoBehaviour
 
         //MenuSceneで選ばれたキャラクター名とエネミー数を代入
         //SelectedPlayer = PlayerPrefs.GetString("Player");
-        SelectedPlayer = MenuDirecter.selectedCharacters["Player"];
+        //SelectedPlayer = MenuDirecter.selectedCharacters["Player"];
         //SelectedEnemyCount = PlayerPrefs.GetInt("EnemyCount");
-        SelectedEnemyCount = int.Parse(MenuDirecter.selectedCharacters["EnemyCount"]);
+        //SelectedEnemyCount = int.Parse(MenuDirecter.selectedCharacters["EnemyCount"]);
 
-        for (int i = 0; i < SelectedEnemyCount; i++)
-        {
-            //SelectedEnemies.Add(PlayerPrefs.GetString($"Enemies{i}"));
-            SelectedEnemies.Add(MenuDirecter.selectedCharacters[$"Enemies{i}"]);
-        }
+        //for (int i = 0; i < SelectedEnemyCount; i++)
+        //{
+        //SelectedEnemies.Add(PlayerPrefs.GetString($"Enemies{i}"));
+        //    SelectedEnemies.Add(MenuDirecter.selectedCharacters[$"Enemies{i}"]);
+        //}
+
+        StreamReader reader = new StreamReader(Application.dataPath + "/JsonData/SelectedCharacter.json");
+        string json = reader.ReadToEnd();
+        reader.Close();
+        SelectedCharacter selected = JsonUtility.FromJson<SelectedCharacter>(json);
+        SelectedPlayer = selected.selectedPlayer;
+        SelectedEnemies = selected.selectedEnemies;
+        SelectedEnemyCount = selected.selectedEnemies.Count;
 
         //JsonFileを参照し、各プレイヤー・エネミーのステータスをPlayer・Enemyクラスに記録する
         Player = JsonConvertToPlayer(SelectedPlayer);
