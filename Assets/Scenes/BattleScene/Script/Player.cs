@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //プレイヤーキャラについての解説
-
 //プレイヤーキャラのHpが0以下になればゲームオーバー
 //Hpの最大値は各キャラ共通で1
 //Defense(被ダメージ率)の値によって受けるダメージ量が変化する

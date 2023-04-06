@@ -5,13 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-//エネミーキャラについての解説
-
-//エネミーキャラはHpが0以下になれば死亡する
-//Hpの最大値は各キャラごとに違う
-//Hpは時間経過で自動回復する
-//Hpの回復速度も各キャラごとに違う
-
 //EnemyControllerクラスについての解説
 //シーン上でのエネミーオブジェクトの動作、またUIを管理するクラス
 //エネミーオブジェクトがEnemyPrefabからインスタンスされると同時に、Constructorメソッドが実行され、

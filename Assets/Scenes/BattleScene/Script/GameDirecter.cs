@@ -8,20 +8,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-//プレイヤー・エネミーキャラを管理するクラスについての解説
-//BattleSceneに登場するキャラクターオブジェクトは、プレイヤーキャラならばPlayerPrefab、
-//エネミーキャラならばEnemyPrefabをインスタンスすることで生成される
-//各キャラごとの初期ステータスはそれぞれJSONファイルに記録されている
-//シーン起動時、指定されたJSONファイルを読み込むことで、各キャラのステータスをPlayerクラス、Enemyクラスに代入する
-//Playerクラス・Enemyクラスから、それぞれのModelとControllerにステータスが代入される
-//Modelは主にキャラクターのステータスの変化を処理するクラス
-//Controllerは主にキャラクターオブジェクトの動作を処理するクラス
-//Hpが減少する、Gutsが回復するなど、何らかのステータス値の変更を行いたい場合は、Presenterクラスで処理を行う
-//Presenterクラスでは、Model内に記録されたステータスの値に、HpゲージやGutsゲージなどのUIの値を同期させる処理を行う
-//Presenterクラスを利用することによって、ModelとController間の依存性を下げる目的がある
-
 //GameDirecterクラスの解説
-//
+//BattleSceneロード時に、シーンに登場する各キャラクターを管理するクラス、またオブジェクトの生成を行う
+//それら生成したクラス、オブジェクトをフィールドに格納し、管理する
+//各キャラクターのHpの値をPlayerModel/EnemyModelクラスを参照することで確認し、
+//死亡しているかどうかの判定を行う
+//プレイヤーキャラ、エネミーキャラの死亡状況に対応し、ゲームクリア・ゲームオーバーの処理を行う
 
 public class GameDirecter : MonoBehaviour
 {

@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+//エネミーキャラについての解説
+//エネミーキャラはHpが0以下になれば死亡する
+//Hpの最大値は各キャラごとに違う
+//Hpは時間経過で自動回復する
+//Hpの回復速度も各キャラごとに違う
+
 public class Enemy
 {
     public string Name { get; private set; } //Enemyの名前
