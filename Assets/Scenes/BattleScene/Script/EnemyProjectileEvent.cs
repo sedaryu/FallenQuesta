@@ -15,7 +15,9 @@ public class EnemyProjectileEvent
         Projectiles = projectiles;
     }
 
-    //keyを用いてProjectileDictionaryから指定したProjectileのステータスを取得し、生成されたProjectilePrefabに渡す
+    //keyを用いてProjectilesから指定したProjectilePrefabを取得し、
+    //生成された飛び道具オブジェクトにアタッチされたスクリプトにその情報を渡す
+    //プレイヤーオブジェクトにヒットした際に発生させるメソッドもイベントへ渡す
     public void ThrowProjectile(EnemyController enemyController, string key)
     {
         ProjectileController projectile = enemyController.InstanciateProjectile(Projectiles[key]).GetComponent<ProjectileController>();
