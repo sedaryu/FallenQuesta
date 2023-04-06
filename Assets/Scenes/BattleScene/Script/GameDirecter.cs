@@ -58,11 +58,15 @@ public class GameDirecter : MonoBehaviour
         Projectiles = SettingProjectiles();
 
         //MenuSceneで選ばれたキャラクター名とエネミー数を代入
-        SelectedPlayer = PlayerPrefs.GetString("Player");
-        SelectedEnemyCount = PlayerPrefs.GetInt("EnemyCount");
+        //SelectedPlayer = PlayerPrefs.GetString("Player");
+        SelectedPlayer = MenuDirecter.selectedCharacters["Player"];
+        //SelectedEnemyCount = PlayerPrefs.GetInt("EnemyCount");
+        SelectedEnemyCount = int.Parse(MenuDirecter.selectedCharacters["EnemyCount"]);
+
         for (int i = 0; i < SelectedEnemyCount; i++)
         {
-            SelectedEnemies.Add(PlayerPrefs.GetString($"Enemies{i}"));
+            //SelectedEnemies.Add(PlayerPrefs.GetString($"Enemies{i}"));
+            SelectedEnemies.Add(MenuDirecter.selectedCharacters[$"Enemies{i}"]);
         }
 
         //JsonFileを参照し、各プレイヤー・エネミーのステータスをPlayer・Enemyクラスに記録する
