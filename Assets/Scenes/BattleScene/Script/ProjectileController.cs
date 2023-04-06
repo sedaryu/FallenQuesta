@@ -13,29 +13,47 @@ using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
 {
-    private bool Player { get; set; } //プレイヤーが放ったProjectileの場合true、エネミーの場合はfalse
+    //インスペクターから代入する
+    [SerializeField] private string _name;
+    [SerializeField] private bool _player;
+    [SerializeField] private float _attack;
+    [SerializeField] private float _cost;
+    [SerializeField] private float _flyingTime;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _rotation;
+    [SerializeField] private float _scale;
+
+    public string Name { get => _name; private set => _name = value; }
+    public bool Player { get => _player; private set => _player = value; } //プレイヤーが放ったProjectileの場合true、エネミーの場合はfalse
+    public float Attack { get => _attack; private set => _attack = value; }
+    public float Cost { get => _cost; private set => _cost = value; }
+    public float FlyingTime { get => _flyingTime; private set => _flyingTime = value; }
+    public float Speed { get => _speed; private set => _speed = value; }
+    public float Rotation { get => _rotation; private set => _rotation = value; }
+    public float Scale { get => _scale; private set => _scale = value; }
+
     private Transform TargetTransform { get; set; } //Projectileのターゲットとなるオブジェクトの位置、当たり判定に用いる
     private List<Transform> TargetTransforms { get; set; } //ターゲットとなるオブジェクトが複数の場合はこちらに代入
-    private ProjectileCalculator ProjectileCalc { get; set; } //Projectileの移動、当たり判定などの処理を行う
+    private ProjectileCalculator ProjectileCalc { get; set; } //Projectileの移動、当たり判定などの計算処理を行う
 
     public event Action ProjectileHitPlayer; //エネミーのProjectileがプレイヤーに当たった場合発生
-    public event Action<List<int>, float> ProjectileHitEnemy; //プレイヤーのProjectileがエネミーに当たった場合発生
-                                                              //引数List<int>は当たったエネミーのインデックス番号
-                                                              //引数floatはエネミーに与えるダメージ
-    public void Constructor(List<Transform> targetTransforms, Projectile projectile)
+
+    //プレイヤーのProjectileがエネミーに当たった場合発生
+    //引数List<int>は当たったエネミーのインデックス番号
+    //引数floatはエネミーに与えるダメージ
+    public event Action<List<int>, float> ProjectileHitEnemy;
+
+    //ターゲットのTransformを取得
+    public void Constructor(List<Transform> targetTransforms) //ターゲットが複数の場合
     {
         TargetTransforms = targetTransforms;
-        ProjectileCalc = new ProjectileCalculator(projectile);
-        Player = projectile.Player;
     }
-    public void Constructor(Transform targetTransform, Projectile projectile)
+    public void Constructor(Transform targetTransform) //ターゲットが単独の場合
     {
         TargetTransform = targetTransform;
-        ProjectileCalc = new ProjectileCalculator(projectile);
-        Player = projectile.Player;
     }
 
-    public void SetTargetTransforms(List<Transform> targetTransforms)
+    public void SetTargetTransforms(List<Transform> targetTransforms) //ターゲットを変更したい場合
     {
         TargetTransforms = targetTransforms;
     }
@@ -43,8 +61,7 @@ public class ProjectileController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Resourcesから取得した飛び道具の画像をSpriteRendererに代入
-        this.GetComponent<SpriteRenderer>().sprite = Resources.Load($"Projectile/{ProjectileCalc.Name}", typeof(Sprite)) as Sprite;
+        ProjectileCalc = new ProjectileCalculator(Player, FlyingTime, Speed, Rotation, Scale);
         SettingTransform(); //プレイヤーかエネミーか、どちらが放ったProjectileかでTransformを調整
     }
 
@@ -97,7 +114,7 @@ public class ProjectileController : MonoBehaviour
 
             if (hits.Count > 0) //hitsの要素数が1以上であればヒット
             {
-                ProjectileHitEnemy.Invoke(hits, ProjectileCalc.Attack); //イベントを実行
+                ProjectileHitEnemy.Invoke(hits, Attack); //イベントを実行
                 Destroy(gameObject);
             }
         }

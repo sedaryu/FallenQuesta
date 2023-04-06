@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6583238609306534718
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4774334482140382815, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: _name
+      value: Bone
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774334482140382815, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: _scale
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774334482140382815, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: _speed
+      value: -8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774334482140382815, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: _rotation
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774334482140382815, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: _flyingTime
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5056901084358042654, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_Size.x
+      value: 0.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 5056901084358042654, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_Size.y
+      value: 1.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5056901084358042654, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1b83c17caef5653438e33cec75da40b8, type: 3}
+    - target: {fileID: 5056901084358042654, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227241892189494377, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6578319496476600549, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}
+      propertyPath: m_Name
+      value: ProjectilePrefab Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 15c94c7685008524395ba7d2ec2510dd, type: 3}

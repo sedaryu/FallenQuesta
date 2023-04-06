@@ -1,34 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerProjectileEvent
 {
     private PlayerPresenter PlayerPresenter { get; set; }
     private List<EnemyPresenter> EnemyPresenter { get; set; }
-    private Dictionary<string, Projectile> Projectile { get; set; } //Projectileの情報をまとめたDictionary
+    private Dictionary<string, GameObject> Projectiles { get; set; } //ProjectilePrefabをまとめたDictionary
+    private Dictionary<string, float> ProjectileCosts { get; set; } = new Dictionary<string, float>();
     private List<Transform> EnemyTransforms { get; set; } //当たり判定に使用
 
     public PlayerProjectileEvent(PlayerPresenter playerPresender, List<EnemyPresenter> enemyPresender, 
-                                 Dictionary<string, Projectile> projectile, List<Transform> enemyTransforms)
+                                 Dictionary<string, GameObject> projectiles, List<Transform> enemyTransforms)
     {
         PlayerPresenter = playerPresender;
         EnemyPresenter = enemyPresender;
-        Projectile = projectile;
+        Projectiles = projectiles;
+        Projectiles.Values.ToList()
+                          .ForEach(x => ProjectileCosts.Add(x.GetComponent<ProjectileController>().Name, x.GetComponent<ProjectileController>().Cost));
         EnemyTransforms = enemyTransforms;
     }
 
-    //keyを用いてProjectileDictionaryから指定したProjectileのステータスを取得し、
+    //keyを用いてProjectilesから指定したProjectilePrefabを取得し、
     //生成された飛び道具オブジェクトにアタッチされたスクリプトにその情報を渡す
     //エネミーオブジェクトにヒットした際に発生させるメソッドもイベントへ渡す
     public void ThrowProjectile(PlayerController playerController, string key)
     {
-        float cost = Projectile[key].Cost;
+        float cost = ProjectileCosts[key];
 
         if (PlayerPresenter.DecreaseGuts(cost)) //Projectileのコストぶんガッツがあるか確認
         {
-            ProjectileController projectile = playerController.InstanciateProjectile().GetComponent<ProjectileController>();
-            projectile.Constructor(EnemyTransforms, Projectile[key]);
+            ProjectileController projectile = playerController.InstanciateProjectile(Projectiles[key]).GetComponent<ProjectileController>();
+            projectile.Constructor(EnemyTransforms);
             projectile.ProjectileHitEnemy += DecreaseEnemyDamage;
         }
     }

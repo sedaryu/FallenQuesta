@@ -27,8 +27,6 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer; //PrefabにアタッチされているSpriteRendererを格納
     private Sprite playerImage; //立ち絵画像
 
-    [SerializeField] private GameObject ProjectilePrefab; //Projectileを生成する際、インスタンスするPrefab
-
     public void Constructor(Player player)
     {
         Speed = player.Speed;
@@ -94,9 +92,9 @@ public class PlayerController : MonoBehaviour
     }
 
     //ProjectilePrefabからProjectileオブジェクトを生成
-    public GameObject InstanciateProjectile() //ProjectileEventクラスのThrowProjectileメソッドから呼ばれる
+    public GameObject InstanciateProjectile(GameObject prefab) //ProjectileEventクラスのThrowProjectileメソッドから呼ばれる
     {
-        return Instantiate(ProjectilePrefab, this.transform.position, Quaternion.identity);
+        return Instantiate(prefab, this.transform.position, Quaternion.identity);
     }
 
     public void UpdateHpUI(float hp) //HpゲージのUIを更新

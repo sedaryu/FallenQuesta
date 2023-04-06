@@ -35,7 +35,6 @@ public class EnemyController : MonoBehaviour
     private Sprite enemyImage; //立ち絵画像
 
     [System.NonSerialized] public Slider hpGauge; //HpゲージのUIオブジェクトを格納
-    [SerializeField] private GameObject ProjectilePrefab;
 
     public void Constructor(Enemy enemy)
     {
@@ -139,8 +138,8 @@ public class EnemyController : MonoBehaviour
         hpGauge.value = hp; //残りHpに応じてUIを更新
     }
 
-    public GameObject InstanciateProjectile() //Projectileを生成
+    public GameObject InstanciateProjectile(GameObject prefab) //Projectileを生成
     {
-        return Instantiate(ProjectilePrefab, this.transform.position, Quaternion.identity);
+        return Instantiate(prefab, this.transform.position, Quaternion.identity);
     }
 }

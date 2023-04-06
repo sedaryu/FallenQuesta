@@ -39,7 +39,10 @@ public class GameDirecter : MonoBehaviour
     private EnemyGenerator enemyGenerator; //EnemyPrefabからエネミーオブジェクトを生成するためのクラス
 
     //プロジェクティル
-    public Dictionary<string, Projectile> Projectiles { get; private set; } = new Dictionary<string, Projectile>(); //フィールド上で使用するProjectileを格納
+    [SerializeField] private List<GameObject> ProjectilePrefabs = new List<GameObject>(); //各プロジェクティルのPrefabをインスペクターから代入
+                                                                                          // =>インスペクターへ代入するよりも必要な物だけResourcesから
+                                                                                          //Loadするように改良
+    public Dictionary<string, GameObject> Projectiles { get; private set; } = new Dictionary<string, GameObject>(); //各プロジェクティルのPrefabを格納
 
     //攻撃イベント
     private PlayerProjectileEvent playerProjectileEvent; //プレイヤーが飛び道具を投げる際のイベントを管理
@@ -50,8 +53,8 @@ public class GameDirecter : MonoBehaviour
 
     private void Awake()
     {
-        //JsonFileを参照し、各飛び道具のステータスをProjectileクラスに記録
-        Projectiles = JsonConvertToProjectiles();
+        //各飛び道具のPrefabをProjectilesに追加
+        Projectiles = SettingProjectiles();
 
         //MenuSceneで選ばれたキャラクター名とエネミー数を代入
         SelectedPlayer = PlayerPrefs.GetString("Player");
@@ -60,7 +63,6 @@ public class GameDirecter : MonoBehaviour
         {
             SelectedEnemies.Add(PlayerPrefs.GetString($"Enemies{i}"));
         }
-        
 
         //JsonFileを参照し、各プレイヤー・エネミーのステータスをPlayer・Enemyクラスに記録する
         Player = JsonConvertToPlayer(SelectedPlayer);
@@ -140,20 +142,11 @@ public class GameDirecter : MonoBehaviour
         return enemies;
     }
 
-    private Dictionary<string, Projectile> JsonConvertToProjectiles()
+    private Dictionary<string, GameObject> SettingProjectiles() //インスペクタから代入したプロジェクティルのPrefabの名前をキーとしてDictionaryに代入
     {
-        Dictionary<string, Projectile> projectiles = new Dictionary<string, Projectile>();
-
-        StreamReader reader;
-        for (int i = 0; i < 4; i++) //ファイル内全ての要素を取得している => マジックナンバーのため改良すべき
-        {
-            reader = new StreamReader(Application.dataPath + "/JsonData/JsonProjectile" + $"/{i}.json");
-            string data = reader.ReadToEnd();
-            reader.Close();
-            JsonProjectile projectile = JsonUtility.FromJson<JsonProjectile>(data);
-            projectiles.Add(projectile.Name, new Projectile(projectile.Name, projectile.Player, projectile.Attack, projectile.Cost, 
-                                                            projectile.FlyingTime, projectile.Speed, projectile.Rotation, projectile.Scale));
-        }
+        Dictionary<string, GameObject> projectiles = new Dictionary<string, GameObject>();
+        
+        ProjectilePrefabs.ForEach(x => projectiles.Add(x.GetComponent<ProjectileController>().Name, x));
 
         return projectiles;
     }

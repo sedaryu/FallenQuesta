@@ -4,26 +4,20 @@ using UnityEngine;
 
 public class ProjectileCalculator
 {
-    public string Name { get; private set; }
-    public float Time { get; private set; }
+    public float Time { get; private set; } = 0;
     public bool Player { get; private set; }
-    public float Attack { get; private set; }
-    public float Cost { get; private set; }
     public float FlyingTime { get; private set; }
     public float Speed { get; private set; }
     public float Rotation { get; private set; }
     public float Scale { get; private set; }
 
-    public ProjectileCalculator(Projectile projectile)
+    public ProjectileCalculator(bool player, float flyingTime, float speed, float rotation, float scale)
     {
-        Name = projectile.Name;
-        Player = projectile.Player;
-        Attack = projectile.Attack;
-        Cost = projectile.Cost;
-        FlyingTime = projectile.FlyingTime;
-        Speed = projectile.Speed;
-        Rotation = projectile.Rotation;
-        Scale = projectile.Scale;
+        Player = player;
+        FlyingTime = flyingTime;
+        Speed = speed;
+        Rotation = rotation;
+        Scale = scale;
     }
 
     public float[] Fly()

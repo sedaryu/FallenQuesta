@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 2
+    serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -439,6 +439,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
@@ -581,9 +582,17 @@ Camera:
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -1520,6 +1529,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744a75502a0bd54418465aba32c32b02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ProjectilePrefabs:
+  - {fileID: 6511495741736796393, guid: 66e8571d2e20c7649bedbb889e8fddee, type: 3}
+  - {fileID: 4551036785068318263, guid: 7f4beae1e596470409ae29e3b42d176f, type: 3}
+  - {fileID: 155462776917604908, guid: ab781ad9e121cda499b6287576637eb4, type: 3}
+  - {fileID: 6401460813818843, guid: 709540b1beaf71641b824b9e066a6ee2, type: 3}
 --- !u!4 &1456609122
 Transform:
   m_ObjectHideFlags: 0
