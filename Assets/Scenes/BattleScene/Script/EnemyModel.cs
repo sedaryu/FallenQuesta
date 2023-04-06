@@ -13,7 +13,7 @@ public class EnemyModel
     public string Name { get; private set; } //Enemyの名前
     public float Hp { get; private set; } //Hp(0以下になると死亡)
     public float MaxHp { get; private set; } //最大Hp
-    public float Heal { get; private set; } //一秒あたりのHpのオート回復量
+    public float Heal { get; private set; } //Hpが最大値の場合の、一秒あたりのHpの自動回復量
     public float Speed { get; private set; } //移動速度
     public float Power { get; private set; } //一秒間に放つProjectileの最大数
     public List<string> Projectiles { get; private set; } //使用するProjectileの名前
@@ -38,7 +38,7 @@ public class EnemyModel
     {
         if (Hp <= MaxHp)
         {
-            Hp += Heal * (Hp / MaxHp) * Time.deltaTime;
+            Hp += Heal * (Hp / MaxHp) * Time.deltaTime; //Hpが低いほど自動回復の量も減少する
         }
     }
 }

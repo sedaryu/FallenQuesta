@@ -42,4 +42,10 @@ public class HpGaugeController : MonoBehaviour
         hpGauge[0].value = Value;
         hpGauge[1].value = Value;
     }
+
+    public void DangerColor()
+    {
+        hpGauge[0].GetComponentsInChildren<Image>()[1].color = Color.red;
+        hpGauge[1].GetComponentsInChildren<Image>()[1].color = Color.red;
+    }
 }

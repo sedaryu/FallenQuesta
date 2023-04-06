@@ -15,6 +15,7 @@ public class CharacterSelectController : MonoBehaviour, IPointerClickHandler
     private Image characterImage; //選択されているキャラの画像を表示
 
     private Text characterName; //選択されているキャラの名前を表示
+    [SerializeField] private Sprite none;
 
     //各キャラ名を代入
     public void SettingCharacter(List<string> characters)
@@ -45,7 +46,7 @@ public class CharacterSelectController : MonoBehaviour, IPointerClickHandler
         {
             if (selectedChara == 0)
             {
-                characterImage.sprite = null;
+                characterImage.sprite = none;
             }
             else
             { 

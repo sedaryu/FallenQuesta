@@ -14,6 +14,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public float Defense { get; private set; }
     public float Speed { get; private set; } //移動速度
     public List<string> Projectiles { get; private set; } //使用するProjectile名
 
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     public void Constructor(Player player)
     {
+        Defense = player.Defense;
         Speed = player.Speed;
         Projectiles = player.Projectiles;
         //Resourcesに保存されたキャラクター画像をロードし、取得する
@@ -100,6 +102,11 @@ public class PlayerController : MonoBehaviour
     public void UpdateHpUI(float hp) //HpゲージのUIを更新
     {
         HpGauge.Value = hp;
+
+        if (hp <= Defense) //あと一撃食らえばゲームオーバーの場合
+        {
+            HpGauge.DangerColor();
+        }
     }
 
     public void UpdateGutsUI(float guts) //GutsゲージのUIを更新
