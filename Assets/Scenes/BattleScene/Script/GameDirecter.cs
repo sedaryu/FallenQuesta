@@ -9,10 +9,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 //GameDirecterクラスの解説
-//BattleSceneロード時に、シーンに登場する各キャラクターを管理するクラス、またオブジェクトの生成を行う
-//それら生成したクラス、オブジェクトをフィールドに格納し、管理する
+//BattleSceneロード時に、JSONファイルを参照し各キャラのステータスをPlayer/Enemyクラスに記録する
+//シーンに登場する各キャラクターを管理するクラス、またオブジェクトの生成を行う
+//それら生成したクラス、オブジェクトをプロパティに格納し、管理する
 //各キャラクターのHpの値をPlayerModel/EnemyModelクラスを参照することで確認し、
-//死亡しているかどうかの判定を行う
+//キャラクター死亡しているかどうかの判定を行う
 //プレイヤーキャラ、エネミーキャラの死亡状況に対応し、ゲームクリア・ゲームオーバーの処理を行う
 
 public class GameDirecter : MonoBehaviour

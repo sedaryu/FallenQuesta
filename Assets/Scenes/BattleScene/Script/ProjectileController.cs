@@ -5,11 +5,10 @@ using System.Linq;
 using UnityEngine;
 
 //ProjectileControllerクラスについての解説
-//シーン上での飛び道具オブジェクトの動作を管理するクラス
-//飛び道具オブジェクトがProjectilePrefabからインスタンスされると同時に、Constructorメソッドが実行され、
-//引数として受け取ったProjectileクラスに代入されている各ステータスを、ProjectileCalculatorクラスのプロパティに代入する
-//同時にターゲットとなるキャラクターのTransformも取得する
-//
+//プロジェクティル（飛び道具）オブジェクトのステータスを管理、
+//またシーン上でのプロジェクティルオブジェクトの動作を管理するクラス
+//プロジェクティルオブジェクトがProjectilePrefabからインスタンスされると同時に、Constructorメソッドが実行され、
+//ターゲットとなるキャラクターのTransformを取得する
 
 public class ProjectileController : MonoBehaviour
 {
@@ -98,8 +97,6 @@ public class ProjectileController : MonoBehaviour
         this.transform.Translate(0, move[0] * Time.deltaTime, 0); //位置を更新
         this.transform.Rotate(move[1] * Time.deltaTime, 0, 0); //角度を更新
         this.transform.localScale += new Vector3(move[2] * Time.deltaTime, move[2] * Time.deltaTime, 0); //大きさを更新
-
-        ProjectileCalc.UpdateTime(Time.deltaTime); //ProjectileCalcに移動時間を渡す
     }
 
     private void ProjectileHittingTarget()
