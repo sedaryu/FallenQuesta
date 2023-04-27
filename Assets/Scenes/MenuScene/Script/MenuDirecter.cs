@@ -18,6 +18,8 @@ public class MenuDirecter : MonoBehaviour
         selectedEnemies.Add(GameObject.Find("SelectedEnemy1").GetComponent<CharacterSelectController>());
         selectedEnemies.Add(GameObject.Find("SelectedEnemy2").GetComponent<CharacterSelectController>());
         selectedEnemies.Add(GameObject.Find("SelectedEnemy3").GetComponent<CharacterSelectController>());
+
+        Screen.SetResolution(640, 360, false);
     }
 
     // Update is called once per frame
